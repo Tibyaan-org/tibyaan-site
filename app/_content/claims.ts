@@ -14,10 +14,10 @@
 */
 
 export const META = {
-  version: "0.1.0", // C-19: published to Maven Central 2026-07-08 (STATUS.md)
+  version: "0.2.0", // C-19: current release on Maven Central (0.1.0 remains available)
   groupId: "io.github.tibyaan-org", // C-19 (README, namespace-wired memory)
   license: "Apache-2.0", // C-19 (LICENSE)
-  cliVersionExample: "0.1.0", // the released line the coordinates resolve to
+  cliVersionExample: "0.2.0", // the released line the coordinates resolve to
 } as const;
 
 // C-4: the headline record. Scope is a sibling field, never separable.
@@ -133,7 +133,7 @@ export const LINKS = {
   github: "https://github.com/Tibyaan-org/tibyaan",
   central: "https://central.sonatype.com/namespace/io.github.tibyaan-org",
   cliJar:
-    "https://repo1.maven.org/maven2/io/github/tibyaan-org/tibyan-cli/0.1.0/tibyan-cli-0.1.0-jar-with-dependencies.jar",
+    "https://repo1.maven.org/maven2/io/github/tibyaan-org/tibyan-cli/0.2.0/tibyan-cli-0.2.0-jar-with-dependencies.jar",
   security: "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/SECURITY.md",
   docs: "https://github.com/Tibyaan-org/tibyaan/tree/main/docs",
   connecting:
