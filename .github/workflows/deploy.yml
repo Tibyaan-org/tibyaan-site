@@ -1,0 +1,58 @@
+# Build the static export and deploy it to GitHub Pages.
+#
+# The site is served at https://tibyaan-org.github.io/tibyaan-site/, so the build
+# runs with BASE_PATH and SITE_URL set to that sub-path (next.config.mjs and the
+# metadata read them). The honesty checks (scripts/honesty-checks.mjs) gate the
+# deploy: no em/en dashes, no banned oversell claims, every internal link resolves,
+# every Maven Central coordinate the site prints returns 200.
+#
+# One-time repository setup: Settings -> Pages -> Build and deployment ->
+# Source: GitHub Actions.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  BASE_PATH: /tibyaan-site
+  SITE_URL: https://tibyaan-org.github.io/tibyaan-site
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Honesty checks
+        run: node scripts/honesty-checks.mjs
+      - run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

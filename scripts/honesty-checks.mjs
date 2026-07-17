@@ -90,13 +90,16 @@ for (const f of copyFiles) {
 notes.push(`anti-claims grep: ${BANNED.length} patterns, ${claimHits} finding(s)`);
 
 // ---- 3. internal link check (built output) --------------------------------
+// With a deploy basePath (GitHub Pages sub-path), internal links carry that
+// prefix, but the exported files under out/ do not. Strip it before resolving.
+const BASE_PATH = process.env.BASE_PATH || "";
 const OUT = join(ROOT, "out");
 const externalUrls = new Set();
 if (!existsSync(OUT)) {
   failures.push("out/ not found: run `next build` before the honesty checks");
 } else {
   const htmlFiles = walk(OUT, (p) => p.endsWith(".html"));
-  notes.push(`scanned ${htmlFiles.length} built HTML file(s)`);
+  notes.push(`scanned ${htmlFiles.length} built HTML file(s)${BASE_PATH ? ` (basePath ${BASE_PATH})` : ""}`);
   for (const f of htmlFiles) {
     const html = readFileSync(f, "utf8");
     for (const m of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
@@ -104,7 +107,10 @@ if (!existsSync(OUT)) {
       if (/^https?:\/\//.test(h)) externalUrls.add(h);
       else if (/^(mailto:|#|data:|tel:)/.test(h)) continue;
       else if (h.startsWith("/")) {
-        const clean = h.split("#")[0].split("?")[0];
+        let clean = h.split("#")[0].split("?")[0];
+        if (BASE_PATH && (clean === BASE_PATH || clean.startsWith(BASE_PATH + "/"))) {
+          clean = clean.slice(BASE_PATH.length) || "/";
+        }
         const candidates = [join(OUT, clean), join(OUT, clean, "index.html"), join(OUT, clean.replace(/\/$/, "") + ".html")];
         if (!candidates.some(existsSync)) failures.push(`internal link resolves to no file: ${h}  (in ${rel(f)})`);
       }
