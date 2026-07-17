@@ -32,6 +32,24 @@ appears that is not in `app/_content/claims.ts`. The survey and artifact excerpt
 from a real scan and generate against `examples/erp-backend`, not hand-written. The private
 enterprise benchmark appears only by counts and shapes, never by name.
 
-Before launch, the site build should run its honesty checks (plan 5.2): a link check, a Maven
-Central coordinate check that fetches every printed coordinate and fails on a non-200, an
-anti-claims grep, and an em-dash scan.
+## Honesty checks
+
+`scripts/honesty-checks.mjs` is the gate that keeps the site as honest as the ledgers it advertises
+(plan section 5.2). It runs after `next build` and fails on any hard finding:
+
+- no em or en dashes in site copy (CLAUDE.md rule 9),
+- none of the banned oversell claims (plan section 7),
+- every internal link in the built `out/` resolves to a real file,
+- every Maven Central coordinate the site prints returns 200 (the runtime, the plugin, the CLI jar).
+
+External links (GitHub, Sonatype UI) are warnings on push and pull request, because the repository
+may still be private before launch. Set `STRICT_LINKS=1` (the deploy path does) to make every
+external link a hard gate once the repository is public.
+
+```bash
+npm run build && npm run check   # or: npm run verify
+STRICT_LINKS=1 npm run check      # deploy-time strictness
+```
+
+CI runs this on every push and pull request that touches `website/**`, via
+`.github/workflows/website.yml`, separate from the Maven reactor CI.

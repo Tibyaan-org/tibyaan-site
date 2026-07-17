@@ -173,7 +173,7 @@ java -jar target/your-app.jar`}</Code>
         </div>
         <p className="mt-6 max-w-[72ch] text-[15px] leading-relaxed text-muted">
           For the exact handshake, a scripted check, and the Claude Desktop bridge config, see{" "}
-          <a href={`${LINKS.docs}/CONNECTING-AN-MCP-CLIENT.md`} target="_blank" rel="noopener noreferrer" className="underline">
+          <a href={LINKS.connecting} target="_blank" rel="noopener noreferrer" className="underline">
             Connecting an MCP client
           </a>
           .

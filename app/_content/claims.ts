@@ -136,6 +136,8 @@ export const LINKS = {
     "https://repo1.maven.org/maven2/io/github/tibyaan-org/tibyan-cli/0.1.0/tibyan-cli-0.1.0-jar-with-dependencies.jar",
   security: "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/SECURITY.md",
   docs: "https://github.com/Tibyaan-org/tibyaan/tree/main/docs",
+  connecting:
+    "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/CONNECTING-AN-MCP-CLIENT.md",
   erpLedger: "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/experiments/third-app-trial.md",
   pmsLedger:
     "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/experiments/second-app-trial.md",
