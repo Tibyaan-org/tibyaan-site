@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Section, Eyebrow, H2 } from "../_components/ui";
+import { Section, Eyebrow, H2, ExtLink } from "../_components/ui";
 import { LINKS } from "../_content/claims";
 
 export const metadata: Metadata = {
   title: "How it works",
   description:
     "What Tibyaan extracts, what proof means here, where the proof stops, and what adoption physically is.",
+  alternates: { canonical: "/how-it-works/" },
 };
 
 export default function HowItWorks() {
@@ -30,7 +31,7 @@ export default function HowItWorks() {
       <Section id="map">
         <Eyebrow n="01">The map</Eyebrow>
         <H2>It builds one neutral description, and generates everything from it.</H2>
-        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-[#3a352d]">
+        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
           <p>
             Tibyaan reads your source and writes down the business objects it finds and the read
             operations over them, in a form that belongs to no framework. That single description is
@@ -53,7 +54,7 @@ export default function HowItWorks() {
           {[
             {
               h: "Exposed",
-              tone: "var(--color-success)",
+              tone: "var(--color-success-strong)",
               b: "A read is exposed when a framework contract proves it. A standard repository load by primary key is a load by primary key by contract, not because a method happens to be named getById.",
             },
             {
@@ -68,10 +69,10 @@ export default function HowItWorks() {
             },
           ].map((c) => (
             <div key={c.h} className="card p-7">
-              <div className="mb-3" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: c.tone }}>
+              <h3 className="mb-3 mt-0 font-normal" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: c.tone }}>
                 {c.h}
-              </div>
-              <p className="m-0 text-[14.5px] leading-relaxed text-[#4a443a]">{c.b}</p>
+              </h3>
+              <p className="m-0 text-[14.5px] leading-relaxed text-body">{c.b}</p>
             </div>
           ))}
         </div>
@@ -85,7 +86,7 @@ export default function HowItWorks() {
       <Section id="ceiling">
         <Eyebrow n="03">Where the proof stops</Eyebrow>
         <H2>A structural tool tops out at what structure can prove, and says so.</H2>
-        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-[#3a352d]">
+        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
           <p>
             Today that means unfiltered reads by id and unfiltered lists. The filtered majority of a
             real application's read API, the searches and the category lookups, is beyond structural
@@ -105,7 +106,7 @@ export default function HowItWorks() {
       <Section id="in-place" tint>
         <Eyebrow n="04">In place, at build time</Eyebrow>
         <H2>Adoption is a dependency and a build step. Nothing is hosted by us.</H2>
-        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-[#3a352d]">
+        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
           <p>
             You add one runtime dependency and one build plugin to your application. Your own build
             generates the tool manifest from your source and places it on the classpath. The server
@@ -127,9 +128,9 @@ export default function HowItWorks() {
         </p>
         <p className="mt-6 text-[14px] text-muted">
           The full design, all seventeen volumes and the dated benchmark ledgers, lives in the{" "}
-          <a href={LINKS.docs} target="_blank" rel="noopener noreferrer" className="underline">
+          <ExtLink href={LINKS.docs} className="underline">
             repository
-          </a>
+          </ExtLink>
           .
         </p>
       </Section>

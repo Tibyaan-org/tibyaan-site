@@ -10,6 +10,6 @@
 export const SURVEY_PROVENANCE = {
   command: "tibyan scan examples/erp-backend",
   tool: "tibyan CLI 0.2.0-SNAPSHOT (current build)",
-  app: "examples/erp-backend (public benchmark; per-entity ledger is docs/experiments/third-app-trial.md)",
+  app: "examples/erp-backend (benchmark whose per-entity ledger is public: docs/experiments/third-app-trial.md)",
   date: "2026-07-17",
 } as const;

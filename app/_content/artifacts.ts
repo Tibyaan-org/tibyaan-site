@@ -9,9 +9,9 @@
   limits into the output ("the total count and page envelope are not modeled",
   "Partial model: 4 field(s) ... are not represented").
 
-  Source app is examples/erp-backend, a public benchmark whose capabilities and entity
-  names are already published in docs/experiments/third-app-trial.md and the README.
-  The private enterprise benchmark never appears here.
+  Source app is examples/erp-backend, a benchmark whose capabilities and entity names
+  are already public in docs/experiments/third-app-trial.md and the README (the app
+  source itself is gitignored). The private enterprise benchmark never appears here.
 */
 
 export const MCP_PROVENANCE = {

@@ -138,8 +138,11 @@ export const LINKS = {
   docs: "https://github.com/Tibyaan-org/tibyaan/tree/main/docs",
   connecting:
     "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/CONNECTING-AN-MCP-CLIENT.md",
+  commands: "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/COMMANDS.md",
   erpLedger: "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/experiments/third-app-trial.md",
   pmsLedger:
     "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/experiments/second-app-trial.md",
+  landscapeDoc:
+    "https://github.com/Tibyaan-org/tibyaan/blob/main/docs/competitive-landscape.md",
   contact: "mailto:ahmed0elseginy@gmail.com",
 } as const;

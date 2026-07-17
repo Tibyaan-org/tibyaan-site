@@ -1,6 +1,34 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 /* Shared presentational primitives. Server components, no client JS. */
+
+// External link that opens a new tab, with a screen-reader cue that the context
+// will change (WCAG 3.2.5) and the required rel for target=_blank safety.
+export function ExtLink({
+  href,
+  children,
+  className,
+  style,
+}: {
+  href: string;
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className} style={style}>
+      {children}
+      <span className="sr-only"> (opens in a new tab)</span>
+    </a>
+  );
+}
+
+// One lead-paragraph size, so intros read consistently across pages.
+export function Lead({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <p className={`max-w-[64ch] text-[18px] leading-relaxed text-muted ${className}`}>{children}</p>
+  );
+}
 
 export function Section({
   id,

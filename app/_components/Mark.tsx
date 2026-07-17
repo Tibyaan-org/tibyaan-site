@@ -4,16 +4,20 @@
   drops for the Latin reading; two sienna dots sit above for the Arabic. Dots stay
   solid at small sizes so the dual-script reading never collapses.
 */
-export function Mark({ size = 28 }: { size?: number }) {
+export function Mark({ size = 28, decorative = false }: { size?: number; decorative?: boolean }) {
+  // decorative = the mark sits next to the visible "Tibyaan" wordmark, so it is
+  // hidden from assistive tech to avoid a doubled announcement.
+  const a11y = decorative
+    ? ({ "aria-hidden": true } as const)
+    : ({ role: "img", "aria-label": "Tibyaan" } as const);
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 128 128"
       fill="none"
-      role="img"
-      aria-label="Tibyaan"
       xmlns="http://www.w3.org/2000/svg"
+      {...a11y}
     >
       <rect x="2" y="2" width="124" height="124" rx="10" fill="#211D17" />
       <rect x="34" y="52" width="60" height="8" rx="4" fill="#F4EEE3" />

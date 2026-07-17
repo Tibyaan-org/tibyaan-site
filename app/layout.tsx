@@ -25,20 +25,28 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+// The deploy origin (plan decision D-2 is still open). Overridable at build time
+// via SITE_URL so the canonical/OG URLs track wherever the site lands.
+const SITE_URL = process.env.SITE_URL || "https://tibyaan-org.github.io";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tibyaan-org.github.io"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Tibyaan: AI agents for the backend you already run",
     template: "%s · Tibyaan",
   },
   description:
     "Tibyaan reads your Spring application's source, exposes only the read operations it can prove, and serves them to AI agents over MCP. Everything it cannot prove, it refuses, with the reason.",
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Tibyaan: AI agents for the backend you already run",
     description:
       "Every tool proven, or refused. Zero wrong bindings across three real applications.",
     type: "website",
+    url: "/",
+    siteName: "Tibyaan",
   },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -53,8 +61,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${plexSans.variable} ${plexSerif.variable} ${plexMono.variable}`}
     >
       <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <Nav />
-        <main>{children}</main>
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
