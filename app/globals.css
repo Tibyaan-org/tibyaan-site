@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/*
+  Heritage Modern design tokens.
+  Single source of design truth, lifted verbatim from the Claude Design brand
+  identity file (asstes/tibyan-platform/project/Tibyan Brand Identity.dc.html,
+  sections 03 Color and 04 Typography). Do not introduce a second palette.
+  Launch is light-only (plan decision D-8): the Ink surfaces are the design
+  system's own dark moments, not a dark theme.
+*/
+@theme {
+  --color-ink: #211d17; /* primary text, dark surfaces, the mark */
+  --color-limestone: #f4eee3; /* page background */
+  --color-surface: #fbf7ef; /* cards, panels */
+  --color-sienna: #a6492e; /* THE accent: one emphasis per view */
+  --color-olive: #5c5a3f; /* secondary accent, rare */
+  --color-muted: #756b5c; /* secondary text, labels */
+  --color-border: #e4dac8; /* card borders, 1px grid gaps */
+  --color-hairline: #d7cdba; /* rules, dividers */
+  --color-sienna-soft: #d98a6a; /* sienna on ink surfaces */
+  --color-code-fg: #e9d9c8; /* terminal and code foreground */
+  --color-code-bg: #2c271f; /* code surface inside dark sections */
+  --color-success: #7faf7a; /* the check mark in real survey output */
+  --color-ink-muted: #b7ae9e; /* secondary text on ink */
+  --color-ink-faint: #9a8f7e; /* tertiary text on ink */
+  --color-comment: #8e8472; /* code comments in snippets */
+  --color-type: #9fb089; /* type names in snippets */
+
+  --font-serif: var(--font-plex-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-plex-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-plex-mono), "SF Mono", ui-monospace, monospace;
+
+  --tracking-label: 0.16em;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-limestone);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  ::selection {
+    background: var(--color-sienna);
+    color: var(--color-surface);
+  }
+  a {
+    color: inherit;
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+@layer components {
+  /* mono eyebrow / label */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* pill / status chip */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+  }
+
+  /* primary and secondary calls to action, per the prototype */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 500;
+    background: var(--color-ink);
+    color: var(--color-limestone);
+    text-decoration: none;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+  .btn-primary:hover {
+    background: var(--color-sienna);
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--color-hairline);
+    padding-bottom: 0.2rem;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--color-sienna);
+    color: var(--color-sienna);
+  }
+
+  /* card surface */
+  .card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: 12px;
+  }
+
+  /* a terminal / code frame */
+  .frame {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .frame-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-limestone);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.7rem 1.1rem;
+  }
+  .frame-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--color-hairline);
+  }
+  .code {
+    margin: 0;
+    max-width: 100%;
+    background: var(--color-ink);
+    color: var(--color-code-fg);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.85;
+    padding: 1.4rem;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  /* a <code> inside .code stays a plain preformatted text node, no inline shrink-wrap */
+  .code code {
+    font: inherit;
+    color: inherit;
+    background: none;
+    white-space: inherit;
+  }
+
+  .fade-up {
+    animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .nav-link {
+    color: var(--color-muted);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-link:hover {
+    color: var(--color-sienna);
+    border-color: var(--color-sienna);
+  }
+  .footer-link {
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-link:hover {
+    color: var(--color-sienna);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

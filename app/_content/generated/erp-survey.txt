@@ -1,0 +1,23 @@
+Discovered (25):
+  by-id (16):
+    + Contact: getContact -> ContactServiceImpl#findById; returns the entity Contact directly (section 4.1) (partial: 3 fields skipped)
+    + ContactCategory: getContactCategory -> ContactCategoryServiceImpl#findById; returns the entity ContactCategory directly (section 4.1) (partial: 1 fields skipped)
+    + ContactGroup: getContactGroup -> ContactGroupServiceImpl#findById; returns the entity ContactGroup directly (section 4.1) (partial: 1 fields skipped)
+    ... (+13 more discovered by id; every one shown in full in the linked ledger)
+  list (9):
+    + listAccount -> AccountServiceImpl#findAll
+    + listContact -> ContactServiceImpl#findAll (paged)
+    ... (+7 more discovered list reads)
+Failed (9):
+  - EmailTemplate [NO_IDENTIFIER]: entity 'EmailTemplate' has @Id 'type' of type 'EmailTemplateType', which does not map to a bindable primitive, so no read-by-id capability is modeled (Volume 5 section 4.1). (partial: 1 fields skipped)
+  - OutboundEmail [NO_BACKING_METHOD]: no service method backs read capability 'getOutboundEmail' for entity 'OutboundEmail'.
+  - OutboundNotification [NO_BACKING_METHOD]: no service method backs read capability 'getOutboundNotification' for entity 'OutboundNotification'.
+  - Quote [AMBIGUOUS_BINDING]: read capability 'getQuote' for entity 'Quote' is backed by more than one candidate: [QuoteServiceImpl#findById (entity-returning), QuoteServiceImpl#getInvoice (view-returning byte[])]. (partial: 2 fields skipped)
+  - SMSMessage [NO_BACKING_METHOD]: no service method backs read capability 'getSMSMessage' for entity 'SMSMessage'. (partial: 1 fields skipped)
+  - Delivery [NO_BACKING_METHOD]: no service method backs read capability 'getDelivery' for entity 'Delivery'. (partial: 1 fields skipped)
+  - DeletedUser [NO_BACKING_METHOD]: no service method backs read capability 'getDeletedUser' for entity 'DeletedUser'.
+  - User [AMBIGUOUS_BINDING]: read capability 'getUser' for entity 'User' is backed by more than one candidate: [UserService#findById (entity-returning), UserService#findByUsername (entity-returning)].
+  - InventoryTransaction [NO_BACKING_METHOD]: no service method backs read capability 'getInventoryTransaction' for entity 'InventoryTransaction'.
+List-refused (1):
+  - ProductCategory [LIST_AMBIGUOUS]: list capability 'listProductCategory' has more than one list-all candidate: [ProductCategoryServiceImpl#findAll, ProductCategoryServiceImpl#findAll].
+Totals: discovered 25 (by-id 16, list 9), failed 9 (by cause: NO_IDENTIFIER 1, NO_BACKING_METHOD 6, AMBIGUOUS_BINDING 2), list-refused 1, skipped-by-parse 0, partial 13 (22 fields skipped), mis-bound 0
