@@ -34,6 +34,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+        with:
+          # Auto-enable Pages if it is not enabled yet, so the first deploy does
+          # not require the manual Settings -> Pages step. Requires a repo where
+          # Pages is available (public repo on the free plan, or any repo on a
+          # paid plan).
+          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
