@@ -6,8 +6,8 @@ on:
     branches: [main]
 
 env:
-  BASE_PATH: /tibyaan-site
-  SITE_URL: https://tibyaan-org.github.io/tibyaan-site
+  BASE_PATH: ""
+  SITE_URL: https://tibyaan.el-seginy.me
 
 jobs:
   build-and-check:
