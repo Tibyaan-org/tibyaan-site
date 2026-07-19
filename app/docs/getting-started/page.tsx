@@ -28,16 +28,15 @@ export default function GettingStarted() {
             Preview first. It changes nothing.
           </h1>
           <p className="mt-7 max-w-[62ch] text-[18px] leading-relaxed text-muted">
-            The honest path, in the honest order: check you are in range, preview read-only, read
-            your survey, then adopt only if the preview convinced you. Adoption is a dependency and a
-            build step, not a rewrite.
+            Check you are in range, preview read-only, read your survey, then adopt only if it
+            convinced you. Adoption is a dependency and a build step, not a rewrite.
           </p>
         </div>
       </header>
 
       {/* station 0 */}
       <Section id="range">
-        <Eyebrow n="00">Are you in range?</Eyebrow>
+        <Eyebrow n="01">Are you in range?</Eyebrow>
         <H2>The gate comes first, before you invest anything.</H2>
         <div className="mt-8" style={{ borderTop: "1px solid var(--color-border)" }}>
           {REQUIREMENTS.map((r) => (
@@ -60,7 +59,7 @@ export default function GettingStarted() {
 
       {/* station 1 */}
       <Section id="preview" tint>
-        <Eyebrow n="01">Preview, read-only, zero risk</Eyebrow>
+        <Eyebrow n="02">Preview, read-only, zero risk</Eyebrow>
         <H2>Survey your application. It reads source and writes nothing.</H2>
         <p className="mt-6 max-w-[72ch] text-[16px] leading-relaxed text-body">
           Download the self-contained CLI from Maven Central and point it at your application. This
@@ -95,11 +94,11 @@ java -jar tibyan-cli/target/tibyan-cli-${META.cliVersionExample}-jar-with-depend
 
       {/* station 2 */}
       <Section id="survey">
-        <Eyebrow n="02">Read your survey</Eyebrow>
+        <Eyebrow n="03">Read your survey</Eyebrow>
         <H2>Refusals are normal, and good. The number to watch is mis-bound.</H2>
         <p className="mt-6 max-w-[72ch] text-[16px] leading-relaxed text-body">
           A real, layered application turns into a precise verified subset plus a named ledger of
-          refusals. That is the tool working, not failing. Here is what each refusal means:
+          refusals. That is the tool working, not failing. What each refusal means:
         </p>
         <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
           {REFUSAL_CAUSES.map((c) => (
@@ -120,7 +119,7 @@ java -jar tibyan-cli/target/tibyan-cli-${META.cliVersionExample}-jar-with-depend
 
       {/* station 3 */}
       <Section id="adopt" tint>
-        <Eyebrow n="03">Adopt</Eyebrow>
+        <Eyebrow n="04">Adopt</Eyebrow>
         <H2>Two entries in your build file, then build.</H2>
         <p className="mt-6 max-w-[72ch] text-[16px] leading-relaxed text-body">
           Once the preview convinces you, add the runtime dependency, which hosts the MCP server
@@ -158,7 +157,7 @@ java -jar target/your-app.jar`}</Code>
 
       {/* station 4 */}
       <Section id="connect">
-        <Eyebrow n="04">Connect an agent</Eyebrow>
+        <Eyebrow n="05">Connect an agent</Eyebrow>
         <H2>Your discovered tools appear over MCP, calling your real methods.</H2>
         <p className="mt-6 max-w-[72ch] text-[16px] leading-relaxed text-body">
           The runtime finds the manifest on the classpath automatically: no launch property, no MCP
@@ -184,7 +183,7 @@ java -jar target/your-app.jar`}</Code>
 
       {/* station 5 */}
       <Section id="security" tint>
-        <Eyebrow n="05">Before you expose anything</Eyebrow>
+        <Eyebrow n="06">Before you expose anything</Eyebrow>
         <H2>The endpoint runs real methods against real data. Gate it.</H2>
         <div className="mt-6 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
           <p>

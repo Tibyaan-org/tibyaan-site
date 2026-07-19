@@ -55,10 +55,18 @@ export function Section({
   );
 }
 
+// Section eyebrow. A number is shown only when the section is a real step in an
+// ordered sequence (the getting-started flow); the number then carries information.
+// Thematic sections get a short sienna rule instead, a marker that anchors the
+// section without implying an order that is not there.
 export function Eyebrow({ n, children }: { n?: string; children: ReactNode }) {
   return (
-    <div className="mb-5 flex items-baseline gap-3.5">
-      {n ? <span className="label" style={{ color: "var(--color-sienna)" }}>{n}</span> : null}
+    <div className="mb-5 flex items-center gap-3">
+      {n ? (
+        <span className="label" style={{ color: "var(--color-sienna)" }}>{n}</span>
+      ) : (
+        <span aria-hidden="true" className="eyebrow-rule" />
+      )}
       <span className="label">{children}</span>
     </div>
   );

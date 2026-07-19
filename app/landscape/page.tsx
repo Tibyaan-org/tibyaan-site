@@ -61,7 +61,7 @@ export default function Landscape() {
 
       {/* convergence */}
       <Section id="convergence">
-        <Eyebrow n="01">The shared conclusion</Eyebrow>
+        <Eyebrow>The shared conclusion</Eyebrow>
         <H2>Both roads lead to a small, typed, pre-verified tool interface.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
           <p>
@@ -80,7 +80,7 @@ export default function Landscape() {
 
       {/* the two approaches */}
       <Section id="axes" tint>
-        <Eyebrow n="02">Where they differ</Eyebrow>
+        <Eyebrow>Where they differ</Eyebrow>
         <H2>Outside-in observes. Inside-out proves.</H2>
         <div className="mt-10 overflow-x-auto">
           <table className="w-full min-w-[760px] border-collapse text-left">
@@ -116,7 +116,7 @@ export default function Landscape() {
 
       {/* where each is right */}
       <Section id="right">
-        <Eyebrow n="03">Where each is the right choice</Eyebrow>
+        <Eyebrow>Where each is the right choice</Eyebrow>
         <H2>Neither wins in the abstract. The input decides.</H2>
         <div className="mt-8 grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2">
           <div className="space-y-5 text-[16px] leading-relaxed text-body-strong">

@@ -20,16 +20,16 @@ export default function HowItWorks() {
             One verified map. Many outputs. Nothing guessed.
           </h1>
           <p className="mt-7 max-w-[62ch] text-[18px] leading-relaxed text-muted">
-            The thirty-second version: Tibyaan reads the Spring backend you already run, proves which
-            read operations are safe to expose, and serves them to AI agents in place, without
-            changing your code. This page is the level beneath that, in plain terms.
+            Tibyaan reads the Spring backend you already run, proves which read operations are safe
+            to expose, and serves them to agents in place, without touching your code. The rest of
+            this page is how.
           </p>
         </div>
       </header>
 
       {/* the map */}
       <Section id="map">
-        <Eyebrow n="01">The map</Eyebrow>
+        <Eyebrow>The map</Eyebrow>
         <H2>It builds one neutral description, and generates everything from it.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
           <p>
@@ -48,7 +48,7 @@ export default function HowItWorks() {
 
       {/* what proof means */}
       <Section id="proof" tint>
-        <Eyebrow n="02">What proof means here</Eyebrow>
+        <Eyebrow>What proof means here</Eyebrow>
         <H2>Structure decides, or nothing does.</H2>
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
           {[
@@ -84,7 +84,7 @@ export default function HowItWorks() {
 
       {/* the ceiling */}
       <Section id="ceiling">
-        <Eyebrow n="03">Where the proof stops</Eyebrow>
+        <Eyebrow>Where the proof stops</Eyebrow>
         <H2>A structural tool tops out at what structure can prove, and says so.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
           <p>
@@ -104,7 +104,7 @@ export default function HowItWorks() {
 
       {/* in place */}
       <Section id="in-place" tint>
-        <Eyebrow n="04">In place, at build time</Eyebrow>
+        <Eyebrow>In place, at build time</Eyebrow>
         <H2>Adoption is a dependency and a build step. Nothing is hosted by us.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
           <p>
@@ -114,8 +114,8 @@ export default function HowItWorks() {
             Tibyaan service in the path at runtime, nothing metered, no vendor infrastructure.
           </p>
           <p>
-            Remove the two entries from your build file and the layer is gone. Your original code was
-            never touched.
+            Remove the two build-file entries and the layer is gone. You never touched your original
+            code.
           </p>
         </div>
         <p className="mt-8">

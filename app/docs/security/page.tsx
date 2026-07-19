@@ -36,7 +36,7 @@ export default function Security() {
 
       {/* what exposing does */}
       <Section id="what">
-        <Eyebrow n="01">What exposing tools actually does</Eyebrow>
+        <Eyebrow>What exposing tools actually does</Eyebrow>
         <H2>Real methods, real data, in your own process.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
           <p>
@@ -55,8 +55,8 @@ export default function Security() {
 
       {/* read-only boundary */}
       <Section id="read-only" tint>
-        <Eyebrow n="02">The read-only boundary, and why it exists</Eyebrow>
-        <H2>v1 serves reads only. Writes are refused at discovery, not merely turned off.</H2>
+        <Eyebrow>The read-only boundary, and why it exists</Eyebrow>
+        <H2>v1 serves reads only. Writes are refused at discovery, never generated.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
           <p>
             Write and action capabilities are refused at the discovery level, so a write is never
@@ -74,7 +74,7 @@ export default function Security() {
 
       {/* the gate is yours */}
       <Section id="gate">
-        <Eyebrow n="03">What you must gate</Eyebrow>
+        <Eyebrow>What you must gate</Eyebrow>
         <H2>The layer inherits your process. It adds no auth of its own.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
           <p>
@@ -102,7 +102,7 @@ export default function Security() {
 
       {/* fail-loud scope */}
       <Section id="fail-loud" tint>
-        <Eyebrow n="04">What fail-loud does and does not protect</Eyebrow>
+        <Eyebrow>What fail-loud does and does not protect</Eyebrow>
         <H2>It guarantees the binding is honest. It does not decide who may call it.</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
           <p>

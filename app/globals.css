@@ -94,6 +94,16 @@
     color: var(--color-muted);
   }
 
+  /* eyebrow marker for a thematic (non-sequence) section: a short sienna rule
+     in place of a step number, so structure is signalled without implying order. */
+  .eyebrow-rule {
+    display: inline-block;
+    width: 1.75rem;
+    height: 2px;
+    background: var(--color-sienna);
+    border-radius: 1px;
+  }
+
   /* pill / status chip */
   .chip {
     display: inline-flex;

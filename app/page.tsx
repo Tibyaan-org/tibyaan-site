@@ -77,8 +77,8 @@ export default function Home() {
           >
             Tibyaan reads your Spring application's source and exposes only the operations it can
             prove: which real method backs each tool, on which entity, returning what. Everything it
-            cannot prove, it refuses, with the reason and the file. Zero wrong bindings, on every
-            run, on every application it has been measured on.
+            cannot prove, it refuses, with the reason and the file. Zero wrong bindings on every
+            application it has read.
           </p>
 
           {/* static metric row, real numbers, no animation of the figures */}
@@ -138,8 +138,8 @@ export default function Home() {
         <div className="mx-auto grid max-w-[1160px] grid-cols-1 gap-4 px-6 py-9 sm:grid-cols-2 md:px-8 lg:grid-cols-4">
           {[
             "Reads your source. Never modifies it.",
-            "Read-only by design: writes are refused at discovery, not just disabled.",
-            "Everything it cannot prove is refused with a located reason.",
+            "Read-only by design. Writes are refused at discovery, never generated.",
+            "It refuses what it cannot prove, and names the reason.",
             "Zero wrong bindings across every run on three real applications.",
           ].map((t) => (
             <div key={t} className="flex items-start gap-3">
@@ -154,7 +154,7 @@ export default function Home() {
 
       {/* 3 THE PROBLEM */}
       <Section id="problem">
-        <Eyebrow n="01">The problem</Eyebrow>
+        <Eyebrow>The problem</Eyebrow>
         <H2>The software that runs the business predates the agent era.</H2>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {[
@@ -168,7 +168,7 @@ export default function Home() {
             },
             {
               h: "Let the agent improvise",
-              b: "Point an agent at the system directly. The dangerous one: it can call the wrong thing and act on a wrong assumption, and nobody can be sure what it will do.",
+              b: "Point an agent at the system directly. The dangerous one. The agent can call the wrong thing on a wrong assumption, and you have no way to know it did.",
             },
           ].map((c) => (
             <div key={c.h} className="card p-8">
@@ -178,14 +178,14 @@ export default function Home() {
           ))}
         </div>
         <p className="mt-10 max-w-[70ch] text-[17px] leading-relaxed text-body">
-          So the value stays locked in, and the bridge to modern AI stays missing. Tibyaan is a
-          fourth option.
+          So the value stays locked away from the agents that could use it. Tibyaan is a fourth
+          path.
         </p>
       </Section>
 
       {/* 4 THE IDEA */}
       <Section id="idea" tint>
-        <Eyebrow n="02">The idea</Eyebrow>
+        <Eyebrow>The idea</Eyebrow>
         <div className="grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-[0.9fr_1.1fr]">
           <h2 className="font-serif text-[clamp(30px,3.4vw,44px)] font-medium leading-[1.06]">
             It never guesses.
@@ -193,14 +193,14 @@ export default function Home() {
           <div className="max-w-[62ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
             <p>
               Your backend already knows how to look up a customer, an order, an invoice. That
-              knowledge is real, tested, and locked inside a system that predates AI agents.
+              knowledge works, and it sits locked inside a system built before AI agents existed.
             </p>
             <p>
               Tibyaan reads that system's source code, the same files your team maintains, and works
-              out which of its read operations it can prove safe to hand to an AI agent. Proof here
-              is literal: an operation is exposed only when the code's own structure shows exactly
-              which real method backs it and exactly what that method returns. Where the structure
-              leaves any doubt, Tibyaan refuses, out loud, with the reason and the file.
+              out which read operations it can prove safe to hand to an AI agent. Proof is literal.
+              It exposes an operation only when the code's structure shows which real method backs it
+              and what that method returns. Where the structure leaves any doubt, it refuses, out
+              loud, with the reason and the file.
             </p>
             <p>
               What survives becomes a set of tools that AI agents already know how to call, served
@@ -213,7 +213,7 @@ export default function Home() {
 
       {/* 5 A REAL SURVEY */}
       <Section id="survey">
-        <Eyebrow n="03">A real survey</Eyebrow>
+        <Eyebrow>A real survey</Eyebrow>
         <div className="grid grid-cols-1 gap-x-16 gap-y-10 lg:grid-cols-[1.15fr_0.85fr]">
           <Frame
             barLabel="tibyan scan examples/erp-backend"
@@ -254,7 +254,7 @@ export default function Home() {
 
       {/* 6 WHAT IT GENERATES */}
       <Section id="output" tint>
-        <Eyebrow n="04">What it generates</Eyebrow>
+        <Eyebrow>What it generates</Eyebrow>
         <H2>The honesty is legible in the output itself.</H2>
         <p className="mt-5 max-w-[70ch] text-[16px] leading-relaxed text-body">
           One verified model produces an MCP server and an OpenAPI document. The tool writes its own
@@ -290,8 +290,8 @@ export default function Home() {
 
       {/* 7 WHAT IT DOES NOT DO (placed high, per the credibility play) */}
       <Section id="boundary">
-        <Eyebrow n="05">What it does not do yet</Eyebrow>
-        <H2>Every one of these is a deliberate refusal-over-guessing boundary, not an oversight.</H2>
+        <Eyebrow>What it does not do yet</Eyebrow>
+        <H2>Each of these is a boundary Tibyaan draws on purpose.</H2>
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {BOUNDARIES.map((b) => (
             <div key={b.k} className="card p-7">
@@ -306,15 +306,14 @@ export default function Home() {
           ))}
         </div>
         <p className="mt-8 max-w-[74ch] text-[15px] leading-relaxed text-muted">
-          The path beyond this boundary is designed and waiting: explicitly human-attested
-          capabilities, labeled as such, never guesses. It gets built when real adopters hit the
-          boundary, not before.
+          The path beyond it is already designed: human-attested capabilities, labeled as such,
+          never guesses. Tibyaan builds it when a real adopter hits the boundary, not before.
         </p>
       </Section>
 
       {/* 8 THE EVIDENCE */}
       <Section id="evidence" tint>
-        <Eyebrow n="06">The evidence</Eyebrow>
+        <Eyebrow>The evidence</Eyebrow>
         <H2>{RECORD.verifiedTools} verified tools. {RECORD.wrongBindings} wrong bindings.</H2>
         <div className="mt-10 overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse text-left">
@@ -363,7 +362,7 @@ export default function Home() {
 
       {/* 9 HOW IT WORKS */}
       <Section id="how">
-        <Eyebrow n="07">How it works</Eyebrow>
+        <Eyebrow>How it works</Eyebrow>
         <H2>Read, prove, refuse or emit, serve.</H2>
         <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl sm:grid-cols-2 lg:grid-cols-4" style={{ background: "var(--color-border)", border: "1px solid var(--color-border)" }}>
           {[
@@ -406,8 +405,8 @@ export default function Home() {
 
       {/* 10 REQUIREMENTS */}
       <Section id="requirements" tint>
-        <Eyebrow n="08">Before you plan an adoption</Eyebrow>
-        <H2>v1 does not fit every aging Spring backend. Here is the honest gate.</H2>
+        <Eyebrow>Before you plan an adoption</Eyebrow>
+        <H2>v1 does not fit every aging Spring backend. Check before you spend a build change.</H2>
         <div className="mt-8" style={{ borderTop: "1px solid var(--color-border)" }}>
           {REQUIREMENTS.map((r) => (
             <div

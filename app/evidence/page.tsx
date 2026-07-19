@@ -38,7 +38,7 @@ export default function Evidence() {
 
       {/* the table */}
       <Section id="benchmarks">
-        <Eyebrow n="01">The three benchmarks</Eyebrow>
+        <Eyebrow>The three benchmarks</Eyebrow>
         <H2>Three real, unmodified applications.</H2>
         <div className="mt-10 overflow-x-auto">
           <table className="w-full min-w-[720px] border-collapse text-left">
@@ -97,7 +97,7 @@ export default function Evidence() {
 
       {/* how to read it */}
       <Section id="reading" tint>
-        <Eyebrow n="02">How to read these numbers</Eyebrow>
+        <Eyebrow>How to read these numbers</Eyebrow>
         <H2>Honestly. Coverage is idiom-bound; the guarantee is zero wrong bindings.</H2>
         <div className="mt-8 grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2">
           <div className="space-y-5 text-[16px] leading-relaxed text-body-strong">
@@ -135,7 +135,7 @@ export default function Evidence() {
 
       {/* redaction + sources */}
       <Section id="sources">
-        <Eyebrow n="03">The private benchmark, and the sources</Eyebrow>
+        <Eyebrow>The private benchmark, and the sources</Eyebrow>
         <div className="max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
           <p>
             The third row is a real multi-module enterprise Spring application, kept private by
