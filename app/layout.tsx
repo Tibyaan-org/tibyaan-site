@@ -1,32 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Serif, IBM_Plex_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Nav } from "./_components/Nav";
 import { Footer } from "./_components/Footer";
 
 // Self-hosted at build time by next/font: no runtime request to Google.
-const plexSans = IBM_Plex_Sans({
+const geistSans = Geist({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-plex-sans",
+  variable: "--font-geist-sans",
   display: "swap",
 });
-const plexSerif = IBM_Plex_Serif({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  variable: "--font-geist-mono",
+  display: "swap",
+});
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
   style: ["normal", "italic"],
-  variable: "--font-plex-serif",
-  display: "swap",
-});
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-plex-mono",
+  variable: "--font-instrument-serif",
   display: "swap",
 });
 
-// The deploy origin (plan decision D-2 is still open). Overridable at build time
-// via SITE_URL so the canonical/OG URLs track wherever the site lands.
+// The deploy origin. Overridable at build time via SITE_URL so the canonical/OG
+// URLs track wherever the site lands.
 const SITE_URL = process.env.SITE_URL || "https://tibyaan-org.github.io";
 
 export const metadata: Metadata = {
@@ -41,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tibyaan: AI agents for the backend you already run",
     description:
-      "Every tool proven, or refused. Zero wrong bindings across three real applications.",
+      "Every tool proven, or refused. Zero wrong bindings across three real benchmark applications.",
     type: "website",
     url: "/",
     siteName: "Tibyaan",
@@ -50,22 +48,33 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F4EEE3",
-  colorScheme: "light",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0b0a09" },
+    { media: "(prefers-color-scheme: light)", color: "#0b0a09" },
+  ],
 };
+
+// Runs before first paint so the stored theme never flashes. Dark is the default;
+// a visitor's explicit choice (the nav toggle) is remembered in localStorage.
+const THEME_SCRIPT = `try{var t=localStorage.getItem("tibyaan-theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${plexSans.variable} ${plexSerif.variable} ${plexMono.variable}`}
+      data-theme="dark"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
         <Nav />
-        <main id="main" tabIndex={-1}>
+        <main id="main" tabIndex={-1} style={{ outline: "none" }}>
           {children}
         </main>
         <Footer />

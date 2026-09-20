@@ -13,11 +13,12 @@ const COLUMNS = [
     ],
   },
   {
-    heading: "Adopt",
+    heading: "Docs",
     links: [
-      { label: "Get started", href: "/docs/getting-started/", ext: false },
+      { label: "Introduction", href: "/docs/", ext: false },
+      { label: "Quickstart", href: "/docs/getting-started/", ext: false },
+      { label: "CLI reference", href: "/docs/cli/", ext: false },
       { label: "Security", href: "/docs/security/", ext: false },
-      { label: "Documentation", href: "/docs/", ext: false },
     ],
   },
   {
@@ -25,6 +26,7 @@ const COLUMNS = [
     links: [
       { label: "GitHub", href: LINKS.github, ext: true },
       { label: "Maven Central", href: LINKS.central, ext: true },
+      { label: "Changelog", href: LINKS.changelog, ext: true },
       { label: "Report a vulnerability", href: LINKS.contact, ext: false },
     ],
   },
@@ -32,25 +34,30 @@ const COLUMNS = [
 
 export function Footer() {
   return (
-    <footer style={{ borderTop: "1px solid var(--color-border)", background: "var(--color-surface)" }}>
-      <div className="mx-auto max-w-[1160px] px-6 py-14 md:px-8">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <footer style={{ borderTop: "1px solid var(--line)", background: "var(--bg-soft)" }}>
+      <div className="container-x py-16">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <Mark size={24} decorative />
-              <span className="font-serif text-[17px] font-medium">Tibyaan</span>
-              <span className="text-[17px] font-semibold" lang="ar" dir="rtl">
+            <div className="flex items-center gap-2.5">
+              <Mark size={26} decorative />
+              <span className="text-[17px] font-semibold" style={{ letterSpacing: "-0.03em" }}>
+                Tibyaan
+              </span>
+              <span className="text-[17px] font-semibold text-muted" lang="ar" dir="rtl">
                 تِبيان
               </span>
             </div>
-            <p className="mt-4 max-w-[34ch] text-[13.5px] leading-relaxed text-muted">
+            <p className="mt-4 max-w-[36ch] text-[14px] leading-relaxed text-muted">
               AI agents for the backend you already run. Every tool proven, or refused.
+            </p>
+            <p className="mt-4 max-w-[36ch] text-[13px] leading-relaxed text-faint">
+              tibyān: classical Arabic for clear exposition, making something evident.
             </p>
           </div>
           {COLUMNS.map((col) => (
             <div key={col.heading}>
               <div className="label mb-4">{col.heading}</div>
-              <ul className="flex flex-col gap-2.5 text-[14px] text-muted">
+              <ul className="m-0 flex list-none flex-col gap-2.5 p-0 text-[14px]">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     {l.ext ? (
@@ -62,7 +69,7 @@ export function Footer() {
                         {l.label}
                       </a>
                     ) : (
-                      <Link href={l.href} className="footer-link no-underline">
+                      <Link href={l.href} className="footer-link">
                         {l.label}
                       </Link>
                     )}
@@ -73,13 +80,13 @@ export function Footer() {
           ))}
         </div>
         <div
-          className="mt-12 flex flex-wrap items-center justify-between gap-3 pt-6"
-          style={{ borderTop: "1px solid var(--color-border)" }}
+          className="mt-14 flex flex-wrap items-center justify-between gap-3 pt-6"
+          style={{ borderTop: "1px solid var(--line)" }}
         >
-          <span className="label" style={{ textTransform: "none", letterSpacing: "0.04em" }}>
+          <span className="label" style={{ textTransform: "none", letterSpacing: "0.02em" }}>
             {META.groupId} · {META.license} · v{META.version}
           </span>
-          <span className="label" style={{ textTransform: "none", letterSpacing: "0.04em" }}>
+          <span className="label" style={{ textTransform: "none", letterSpacing: "0.02em" }}>
             Open source. Verified, not asserted.
           </span>
         </div>

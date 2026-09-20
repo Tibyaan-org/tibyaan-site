@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Section, Eyebrow, H2, Lead, ExtLink } from "../_components/ui";
+import { Section, Eyebrow, H2, PageHeader, ExtLink, Arrow } from "../_components/ui";
 import { LINKS } from "../_content/claims";
 
 export const metadata: Metadata = {
@@ -41,29 +41,18 @@ const AXES = [
 export default function Landscape() {
   return (
     <>
-      <header className="mx-auto max-w-[1160px] px-6 md:px-8">
-        <div className="py-[clamp(56px,9vh,96px)]" style={{ borderBottom: "1px solid var(--color-border)" }}>
-          <Eyebrow>Approach</Eyebrow>
-          <h1
-            className="m-0 max-w-[20ch] font-serif text-[clamp(38px,5.4vw,72px)] font-medium leading-[1.04]"
-            style={{ letterSpacing: "-0.02em" }}
-          >
-            Two honest ways to make a system operable by agents.
-          </h1>
-          <Lead className="mt-7">
-            To put an AI agent in front of an existing system, you can work from the outside, driving
-            the running system and observing its behavior, or from the inside, reading the source you
-            own and proving its structure. Tibyaan is the inside-out one. This page compares the two
-            approaches at the category level, without naming any product, and without a winner.
-          </Lead>
-        </div>
-      </header>
+      <PageHeader eyebrow="Approach" title="Two honest ways to make a system operable by agents.">
+        To put an AI agent in front of an existing system, you can work from the outside, driving
+        the running system and observing its behavior, or from the inside, reading the source you
+        own and proving its structure. Tibyaan is the inside-out one. This page compares the two
+        approaches at the category level, without naming any product, and without a winner.
+      </PageHeader>
 
       {/* convergence */}
       <Section id="convergence">
         <Eyebrow>The shared conclusion</Eyebrow>
         <H2>Both roads lead to a small, typed, pre-verified tool interface.</H2>
-        <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-body-strong">
+        <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-fg-soft">
           <p>
             Built independently, the outside-in and inside-out approaches reach the same shape: do not
             hand the agent the raw surface, whether that is a raw web page or raw code. Pre-map the
@@ -82,31 +71,33 @@ export default function Landscape() {
       <Section id="axes" tint>
         <Eyebrow>Where they differ</Eyebrow>
         <H2>Outside-in observes. Inside-out proves.</H2>
-        <div className="mt-10 overflow-x-auto">
-          <table className="w-full min-w-[760px] border-collapse text-left">
+        <div className="card mt-10 overflow-x-auto">
+          <table className="doc-table min-w-[760px]">
             <caption className="sr-only">
               The outside-in and inside-out approaches compared across input, method, truth model,
               failure mode, and best domain.
             </caption>
             <thead>
-              <tr style={{ borderBottom: "1px solid var(--color-border)" }}>
-                <th scope="col" className="label py-3 pr-6 font-normal" style={{ textTransform: "none" }} />
-                <th scope="col" className="label py-3 pr-6 font-normal" style={{ textTransform: "none" }}>
-                  Outside-in (observe)
-                </th>
-                <th scope="col" className="label py-3 pr-6 font-normal" style={{ textTransform: "none", color: "var(--color-sienna)" }}>
+              <tr>
+                <th scope="col" />
+                <th scope="col">Outside-in (observe)</th>
+                <th scope="col" style={{ color: "var(--accent)" }}>
                   Inside-out (prove), Tibyaan
                 </th>
               </tr>
             </thead>
             <tbody>
               {AXES.map((a) => (
-                <tr key={a.axis} style={{ borderBottom: "1px solid var(--color-border)" }}>
-                  <th scope="row" className="w-[120px] py-4 pr-6 text-left align-top">
-                    <span className="label" style={{ textTransform: "none" }}>{a.axis}</span>
+                <tr key={a.axis}>
+                  <th
+                    scope="row"
+                    className="w-[130px] text-left align-top"
+                    style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--line)", background: "transparent", color: "var(--fg)", fontFamily: "var(--font-sans)", fontSize: "0.875rem", letterSpacing: 0, textTransform: "none", fontWeight: 600 }}
+                  >
+                    {a.axis}
                   </th>
-                  <td className="py-4 pr-6 align-top text-[14.5px] leading-relaxed text-body">{a.outside}</td>
-                  <td className="py-4 pr-6 align-top text-[14.5px] leading-relaxed text-body">{a.inside}</td>
+                  <td>{a.outside}</td>
+                  <td>{a.inside}</td>
                 </tr>
               ))}
             </tbody>
@@ -118,8 +109,9 @@ export default function Landscape() {
       <Section id="right">
         <Eyebrow>Where each is the right choice</Eyebrow>
         <H2>Neither wins in the abstract. The input decides.</H2>
-        <div className="mt-8 grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2">
-          <div className="space-y-5 text-[16px] leading-relaxed text-body-strong">
+        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="card space-y-4 p-7 text-[15.5px] leading-relaxed text-fg-soft">
+            <div className="label">A system you cannot read</div>
             <p>
               For a system you cannot read, a third-party site with no API, black-box observation is
               not merely reasonable, it is the only option, and inferring then empirically verifying is
@@ -129,7 +121,8 @@ export default function Landscape() {
               Tibyaan cannot run there at all. With no source to read, there is nothing to prove.
             </p>
           </div>
-          <div className="space-y-5 text-[16px] leading-relaxed text-body-strong">
+          <div className="card space-y-4 p-7 text-[15.5px] leading-relaxed text-fg-soft">
+            <div className="label" style={{ color: "var(--accent)" }}>A backend you own</div>
             <p>
               For a backend you own, the source is the ground truth, and reading it is strictly
               stronger evidence than observing behavior from outside. Structural proof removes the
@@ -146,14 +139,14 @@ export default function Landscape() {
         <p className="mt-10 max-w-[74ch] text-[15px] leading-relaxed text-muted">
           The full, sourced comparison against a specific external system, held to a stricter standard
           than this page (their claims marked as vendor claims, ours cited), lives in the repository:{" "}
-          <ExtLink href={LINKS.landscapeDoc} className="footer-link underline">
+          <ExtLink href={LINKS.landscapeDoc} className="prose-link">
             docs/competitive-landscape.md
           </ExtLink>
           .
         </p>
         <p className="mt-8">
-          <Link href="/how-it-works/" className="btn-secondary text-[15px]">
-            How the inside-out proof works
+          <Link href="/how-it-works/" className="link-arrow text-[15px]">
+            How the inside-out proof works <Arrow />
           </Link>
         </p>
       </Section>

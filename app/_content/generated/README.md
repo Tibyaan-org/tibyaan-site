@@ -24,3 +24,15 @@ To refresh `erp-survey.txt`:
 3. Rebuild. No code change is needed, and no character can break the layout.
 
 The provenance shown in the caption lives in `../survey.ts`.
+
+## mcp-handshake.txt
+
+The four recorded lines of the out-of-process MCP handshake against the in-repo example app
+(`examples/legacy-spring-app`), copied byte for byte from the main repository's
+`docs/CONNECTING-AN-MCP-CLIENT.md` ("Verified end to end", recorded 2026-07-07). The only
+editorial act is removing the two-space list indent the Markdown carries. The `sessionId` elision
+(`e843ec10-...`) is in the source record itself. The `serverInfo` version reads `0.1.0` because
+that is what the recorded run printed; the file is a record, so it is not updated to look current.
+To refresh it, re-run `python scripts/verify-mcp-sse.py` against the example app, record the new
+output in the main repository first, then copy it here. The provenance shown in the caption lives
+in `../survey.ts`.

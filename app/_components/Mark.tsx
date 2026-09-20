@@ -1,8 +1,12 @@
 /*
-  The bilingual ligature mark, verbatim from the brand identity file (section 05).
+  The bilingual ligature mark, geometry verbatim from the brand identity file (section 05).
   One bar is the crossbar of the Latin T and the body of the Arabic taa; the stem
-  drops for the Latin reading; two sienna dots sit above for the Arabic. Dots stay
+  drops for the Latin reading; two accent dots sit above for the Arabic. Dots stay
   solid at small sizes so the dual-script reading never collapses.
+
+  Colours follow the theme: the tile takes the foreground colour and the glyph the
+  background colour, so the mark is a light tile on the dark theme and an ink tile
+  on the light theme, with the accent dots constant.
 */
 export function Mark({ size = 28, decorative = false }: { size?: number; decorative?: boolean }) {
   // decorative = the mark sits next to the visible "Tibyaan" wordmark, so it is
@@ -19,11 +23,11 @@ export function Mark({ size = 28, decorative = false }: { size?: number; decorat
       xmlns="http://www.w3.org/2000/svg"
       {...a11y}
     >
-      <rect x="2" y="2" width="124" height="124" rx="10" fill="#211D17" />
-      <rect x="34" y="52" width="60" height="8" rx="4" fill="#F4EEE3" />
-      <rect x="60" y="56" width="8" height="40" rx="4" fill="#F4EEE3" />
-      <circle cx="56" cy="40" r="5" fill="#A6492E" />
-      <circle cx="72" cy="40" r="5" fill="#A6492E" />
+      <rect x="2" y="2" width="124" height="124" rx="28" fill="var(--fg)" />
+      <rect x="34" y="52" width="60" height="8" rx="4" fill="var(--bg)" />
+      <rect x="60" y="56" width="8" height="40" rx="4" fill="var(--bg)" />
+      <circle cx="56" cy="40" r="5.5" fill="var(--accent)" />
+      <circle cx="72" cy="40" r="5.5" fill="var(--accent)" />
     </svg>
   );
 }

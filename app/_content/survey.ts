@@ -13,3 +13,12 @@ export const SURVEY_PROVENANCE = {
   app: "examples/erp-backend (benchmark whose per-entity ledger is public: docs/experiments/third-app-trial.md)",
   date: "2026-07-17",
 } as const;
+
+// The recorded out-of-process MCP handshake shown in the hero's third tab. The text
+// lives in ./generated/mcp-handshake.txt (see ./generated/README.md).
+export const HANDSHAKE_PROVENANCE = {
+  command: "python scripts/verify-mcp-sse.py",
+  app: "examples/legacy-spring-app (the in-repo example application)",
+  source: "docs/CONNECTING-AN-MCP-CLIENT.md, section \"Verified end to end\"",
+  date: "2026-07-07",
+} as const;

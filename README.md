@@ -10,13 +10,30 @@ Deployed with GitHub Pages at **https://tibyaan-org.github.io/tibyaan-site/**.
 ## Stack
 
 - Next.js (App Router), static export (`output: "export"`), no server.
-- Tailwind CSS v4, with the Heritage Modern design tokens declared once in `app/globals.css`
-  (`@theme`) as the single source of design truth. Light-only.
-- IBM Plex Sans, Serif, and Mono, self-hosted at build time via `next/font`.
+- Tailwind CSS v4. The design tokens are declared once in `app/globals.css` as semantic names
+  (`--bg`, `--surface`, `--fg`, `--muted`, `--accent`, ...), dark-first with a light theme behind
+  the same names. The theme is `data-theme` on `<html>`, set before first paint by the inline script
+  in `app/layout.tsx`; the nav toggle stores the visitor's choice. Code panels stay dark in both themes.
+- Geist, Geist Mono, and Instrument Serif (the one italic accent in headlines), self-hosted at build
+  time via `next/font`.
+- Client JavaScript is limited to four small islands: the theme toggle, the mobile menus, the copy
+  buttons, and the hero's three-tab window. Every tab panel is server-rendered into the static HTML.
 - Content lives in typed modules under `app/_content/`. Every factual number is in `claims.ts`,
-  each traced to a document in the main repo that proves it. The survey and generated-output
-  excerpts in `survey.ts` and `artifacts.ts` are verbatim copies of real tool output, with
-  provenance. The approved plan lives in the main repo at `docs/website-plan.md`.
+  each traced to a document in the main repo that proves it. The survey, the generated-output
+  excerpts, and the recorded MCP handshake are verbatim copies of real tool output, with provenance
+  (`survey.ts`, `artifacts.ts`, `generated/`). The original plan lives in the main repo at
+  `docs/website-plan.md`; the second-generation visual design (dark-first, the docs section)
+  supersedes its light-only and zero-client-JS decisions, and keeps every honesty rule.
+
+## Documentation section
+
+`/docs` is a real docs site: a shared shell (`app/docs/layout.tsx`) with a sidebar, an "on this
+page" rail, and a previous/next pager. The tree is declared once in `app/_content/docs-nav.ts`; the
+sidebar, the docs index, the pager, the home page cards, and the sitemap all read it. To add a page,
+add one entry there and create `app/docs/<slug>/page.tsx` using the building blocks in
+`app/_components/docs/doc.tsx` (`DocPage`, `H2`, `Callout`, `DocTable`, `Steps`) and `CodeBlock`
+from `app/_components/ui.tsx`. Each page names the repository document it adapts, which stays the
+authoritative text.
 
 ## Develop and build
 

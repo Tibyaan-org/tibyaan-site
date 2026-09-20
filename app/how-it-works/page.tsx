@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Section, Eyebrow, H2, ExtLink } from "../_components/ui";
+import { Section, Eyebrow, H2, PageHeader, ExtLink, Arrow } from "../_components/ui";
 import { LINKS } from "../_content/claims";
 
 export const metadata: Metadata = {
@@ -10,28 +10,45 @@ export const metadata: Metadata = {
   alternates: { canonical: "/how-it-works/" },
 };
 
+// The pipeline, as boxes. Purely explanatory: no numbers, no tool output.
+const PIPELINE = [
+  { k: "Your source", v: "The Spring application your team already maintains. Read, never modified." },
+  { k: "One verified model", v: "Entities and the read operations structure can prove. Everything else is refused, by name." },
+  { k: "Generated outputs", v: "An MCP tool manifest and an OpenAPI 3.0 document, from the same model." },
+  { k: "Served in place", v: "A runtime inside your own app serves the tools and calls your real methods." },
+];
+
 export default function HowItWorks() {
   return (
     <>
-      <header className="mx-auto max-w-[1160px] px-6 md:px-8">
-        <div className="py-[clamp(56px,9vh,96px)]" style={{ borderBottom: "1px solid var(--color-border)" }}>
-          <Eyebrow>How it works</Eyebrow>
-          <h1 className="m-0 max-w-[20ch] font-serif text-[clamp(38px,5.4vw,72px)] font-medium leading-[1.04]" style={{ letterSpacing: "-0.02em" }}>
-            One verified map. Many outputs. Nothing guessed.
-          </h1>
-          <p className="mt-7 max-w-[62ch] text-[18px] leading-relaxed text-muted">
-            Tibyaan reads the Spring backend you already run, proves which read operations are safe
-            to expose, and serves them to agents in place, without touching your code. The rest of
-            this page is how.
-          </p>
+      <PageHeader eyebrow="How it works" title="One verified map. Many outputs. Nothing guessed.">
+        Tibyaan reads the Spring backend you already run, proves which read operations are safe to
+        expose, and serves them to agents in place, without touching your code. The rest of this
+        page is how.
+      </PageHeader>
+
+      {/* the pipeline */}
+      <section style={{ borderTop: "1px solid var(--line)", background: "var(--bg-soft)" }}>
+        <div className="container-x py-12">
+          <ol className="m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-4">
+            {PIPELINE.map((p, i) => (
+              <li key={p.k} className="card relative p-6">
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--accent)" }}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="mt-2 text-[16px] font-semibold text-fg">{p.k}</div>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{p.v}</p>
+              </li>
+            ))}
+          </ol>
         </div>
-      </header>
+      </section>
 
       {/* the map */}
       <Section id="map">
         <Eyebrow>The map</Eyebrow>
         <H2>It builds one neutral description, and generates everything from it.</H2>
-        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
+        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-fg-soft">
           <p>
             Tibyaan reads your source and writes down the business objects it finds and the read
             operations over them, in a form that belongs to no framework. That single description is
@@ -50,29 +67,29 @@ export default function HowItWorks() {
       <Section id="proof" tint>
         <Eyebrow>What proof means here</Eyebrow>
         <H2>Structure decides, or nothing does.</H2>
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {[
             {
               h: "Exposed",
-              tone: "var(--color-success-strong)",
+              tone: "var(--ok)",
               b: "A read is exposed when a framework contract proves it. A standard repository load by primary key is a load by primary key by contract, not because a method happens to be named getById.",
             },
             {
               h: "Refused, ambiguous",
-              tone: "var(--color-sienna)",
+              tone: "var(--accent)",
               b: "When two methods both fit the shape of the read, the tool refuses rather than pick one. A real example: an entity with both findById and findByUsername is refused, not guessed.",
             },
             {
               h: "Refused, unprovable",
-              tone: "var(--color-sienna)",
+              tone: "var(--accent)",
               b: "When meaning is not in the structure, it is refused. A check sitting between the load and the return could be an authorization rule; the tool cannot tell, so it will not claim.",
             },
           ].map((c) => (
             <div key={c.h} className="card p-7">
-              <h3 className="mb-3 mt-0 font-normal" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: c.tone }}>
+              <h3 className="font-normal" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: c.tone }}>
                 {c.h}
               </h3>
-              <p className="m-0 text-[14.5px] leading-relaxed text-body">{c.b}</p>
+              <p className="mt-3 text-[14.5px] leading-relaxed text-fg-soft">{c.b}</p>
             </div>
           ))}
         </div>
@@ -86,7 +103,7 @@ export default function HowItWorks() {
       <Section id="ceiling">
         <Eyebrow>Where the proof stops</Eyebrow>
         <H2>A structural tool tops out at what structure can prove, and says so.</H2>
-        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
+        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-fg-soft">
           <p>
             Today that means unfiltered reads by id and unfiltered lists. The filtered majority of a
             real application's read API, the searches and the category lookups, is beyond structural
@@ -94,19 +111,25 @@ export default function HowItWorks() {
             agent acts on. So the tool refuses it rather than present a guess as verified.
           </p>
           <p>
-            Where that boundary can move honestly, it is designed and waiting. A human can attest to
-            a capability the structure cannot prove, and it would be carried as exactly that, human
-            attested, never as verified. That work is built when a real adopter hits the boundary,
-            not before.
+            Where that boundary can move honestly, it moves by a person's word, never by a guess. A
+            named human can attest what a refused read selects or returns, in a committed, reviewed
+            file. The tool carries it as exactly that: human-attested, labeled on every surface,
+            never counted as verified, fingerprinted to the code it was asserted against, and refused
+            loudly the moment that code changes.
           </p>
         </div>
+        <p className="mt-8">
+          <Link href="/docs/attestation/" className="link-arrow text-[15px]">
+            How attestation works <Arrow />
+          </Link>
+        </p>
       </Section>
 
       {/* in place */}
       <Section id="in-place" tint>
         <Eyebrow>In place, at build time</Eyebrow>
         <H2>Adoption is a dependency and a build step. Nothing is hosted by us.</H2>
-        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-body-strong">
+        <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-fg-soft">
           <p>
             You add one runtime dependency and one build plugin to your application. Your own build
             generates the tool manifest from your source and places it on the classpath. The server
@@ -118,17 +141,18 @@ export default function HowItWorks() {
             code.
           </p>
         </div>
-        <p className="mt-8">
-          <Link href="/docs/getting-started/" className="btn-primary text-[15px]">
+        <div className="mt-9 flex flex-wrap items-center gap-3">
+          <Link href="/docs/getting-started/" className="btn btn-primary">
             See the real quickstart
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="var(--color-limestone)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <Arrow />
           </Link>
-        </p>
-        <p className="mt-6 text-[14px] text-muted">
+          <Link href="/docs/" className="btn btn-ghost">
+            Read the docs
+          </Link>
+        </div>
+        <p className="mt-8 text-[14px] text-muted">
           The full design, all seventeen volumes and the dated benchmark ledgers, lives in the{" "}
-          <ExtLink href={LINKS.docs} className="underline">
+          <ExtLink href={LINKS.docs} className="prose-link">
             repository
           </ExtLink>
           .
