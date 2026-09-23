@@ -89,6 +89,54 @@ for (const f of copyFiles) {
 }
 notes.push(`anti-claims grep: ${BANNED.length} patterns, ${claimHits} finding(s)`);
 
+// ---- 2b. plain-language lint (warnings only) -------------------------------
+// The site copy is meant to read like a normal developer-tool site. These are the
+// phrasings that made an earlier version read as machine-written: project jargon,
+// writing about honesty instead of stating the fact, staccato "No X. No Y." runs,
+// and "X, not Y" contrast used for effect. A hit is a prompt to reread the sentence,
+// never a build failure: some contrasts are the clearest way to say a technical thing.
+const STYLE = [
+  /\bfail[ -]loud\b/i,
+  /\bidiom[ -]bound\b/i,
+  /\blocated reason\b/i,
+  /\bhonest(ly|y)?\b/i,
+  /\bloud(ly)?\b/i,
+  /\bon purpose\b/i,
+  /\bthe whole point\b/i,
+  /\bNo \w+\. No \w+\./,
+  /, not (a|an|the|by|because|just|merely|failing|asserted)\b/i,
+];
+let styleHits = 0;
+for (const f of copyFiles) {
+  if (!/\.(ts|tsx)$/.test(f)) continue;
+  // verbatim tool output and its provenance are records, not prose
+  if (/_content[\\/](generated|artifacts\.ts|survey\.ts)/.test(f)) continue;
+  let inBlockComment = false; // code comments are for maintainers, not site copy
+  readFileSync(f, "utf8")
+    .split("\n")
+    .forEach((line, i) => {
+      const t = line.trim();
+      if (inBlockComment) {
+        if (t.includes("*/")) inBlockComment = false;
+        return;
+      }
+      if (t.startsWith("/*") || t.startsWith("{/*")) {
+        if (!t.includes("*/")) inBlockComment = true;
+        return;
+      }
+      if (t.startsWith("//") || t.startsWith("*")) return;
+      // anchor ids stay stable for existing links, so an id is never a wording finding
+      const prose = line.replace(/\bid(=|: )"[^"]*"/g, "");
+      for (const re of STYLE) {
+        if (re.test(prose)) {
+          styleHits++;
+          warnings.push(`style /${re.source}/: ${rel(f)}:${i + 1}  ${t.slice(0, 80)}`);
+        }
+      }
+    });
+}
+notes.push(`plain-language lint: ${STYLE.length} patterns, ${styleHits} warning(s)`);
+
 // ---- 3. internal link check (built output) --------------------------------
 // With a deploy basePath (GitHub Pages sub-path), internal links carry that
 // prefix, but the exported files under out/ do not. Strip it before resolving.

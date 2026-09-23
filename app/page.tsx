@@ -95,32 +95,29 @@ export default function Home() {
         <div className="hero-backdrop" aria-hidden="true" />
         <div className="container-x relative">
           <div className="flex flex-col items-center pb-14 pt-[clamp(56px,9vh,104px)] text-center">
-            <ExtLink href={LINKS.changelog} className="chip fade-up mb-8">
+            <ExtLink href={LINKS.changelog} className="chip mb-8">
               <span className="chip-tag">v{META.version}</span>
               <span>The attestation release is on Maven Central</span>
               <Arrow size={13} />
             </ExtLink>
 
             <h1
-              className="display fade-up max-w-[21ch] text-[clamp(38px,6vw,76px)] text-fg"
-              style={{ animationDelay: "0.05s" }}
+              className="display max-w-[21ch] text-[clamp(38px,6vw,76px)] text-fg"
             >
-              AI agents for the backend you already run.{" "}
-              <span className="accent-serif block pt-1">Every tool proven, or refused.</span>
+              Connect AI agents to the Spring backend{" "}
+              <span className="accent-serif">you already run</span>
             </h1>
 
             <p
-              className="fade-up mt-7 max-w-[60ch] text-[clamp(16.5px,1.5vw,19px)] leading-relaxed text-muted"
-              style={{ animationDelay: "0.12s" }}
+              className="mt-7 max-w-[60ch] text-[clamp(16.5px,1.5vw,19px)] leading-relaxed text-muted"
             >
               Tibyaan reads your Spring application's source and turns the read operations it can
-              prove into MCP tools, served from inside your own app. What it cannot prove, it
-              refuses, with the reason and the file. No rewrite. No guessing.
+              verify into MCP tools, served from inside your own app. Anything it can't verify is
+              left out, and the scan output tells you why. Your code stays as it is.
             </p>
 
             <div
-              className="fade-up mt-9 flex flex-wrap items-center justify-center gap-3"
-              style={{ animationDelay: "0.18s" }}
+              className="mt-9 flex flex-wrap items-center justify-center gap-3"
             >
               <Link href="/docs/getting-started/" className="btn btn-primary">
                 Get started
@@ -131,7 +128,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="fade-up mt-6 w-full max-w-[740px]" style={{ animationDelay: "0.24s" }}>
+            <div className="mt-6 w-full max-w-[740px]">
               <div className="cmdline" dir="ltr">
                 <span aria-hidden="true" style={{ color: "var(--accent)" }}>
                   $
@@ -140,13 +137,13 @@ export default function Home() {
                 <CopyButton text={SCAN_COMMAND} />
               </div>
               <p className="mt-2.5 text-[12.5px] text-faint">
-                The preview is read-only. It needs only Java 17 and writes nothing to your project.
+                The scan is read-only. It only needs Java 17 and writes nothing to your project.
               </p>
             </div>
           </div>
 
           {/* the three-step window: every panel is verbatim recorded output */}
-          <div className="fade-up mx-auto max-w-[1020px] pb-16" style={{ animationDelay: "0.3s" }}>
+          <div className="mx-auto max-w-[1020px] pb-16">
             <HeroShowcase
               tabs={[
                 {
@@ -164,7 +161,7 @@ export default function Home() {
                   caption: (
                     <>
                       Unedited output of the ERP benchmark survey ({SURVEY_PROVENANCE.date}). Elisions
-                      are marked in the text and only shorten the discovered lists; every refusal is
+                      are marked in the text and only shorten the discovered lists. Every refusal is
                       shown in full. The per-entity ledger is{" "}
                       <ExtLink href={LINKS.erpLedger} className="prose-link">
                         public
@@ -175,8 +172,8 @@ export default function Home() {
                 },
                 {
                   key: "generate",
-                  label: "Get verified tools",
-                  title: "tibyan/capabilities.json (two of the 25 entries)",
+                  label: "Generate the manifest",
+                  title: `tibyan/capabilities.json (two of the ${ERP_SURVEY.discovered} entries)`,
                   isCommand: false,
                   panel: (
                     <pre className="code code-scroll">
@@ -187,15 +184,15 @@ export default function Home() {
                   ),
                   caption: (
                     <>
-                      From the real MCP manifest generated for the same application.{" "}
-                      {MCP_PROVENANCE.tool}, {MCP_PROVENANCE.date}. Each tool names the real method
-                      it is bound to.
+                      From the MCP manifest generated for the same application.{" "}
+                      {MCP_PROVENANCE.tool}, {MCP_PROVENANCE.date}. Each tool names the method it is
+                      bound to.
                     </>
                   ),
                 },
                 {
                   key: "call",
-                  label: "Agents call your real methods",
+                  label: "Call a tool from an agent",
                   title: HANDSHAKE_PROVENANCE.command,
                   isCommand: true,
                   panel: (
@@ -205,9 +202,9 @@ export default function Home() {
                   ),
                   caption: (
                     <>
-                      Recorded {HANDSHAKE_PROVENANCE.date}: an out-of-process client against the
-                      in-repo example app, over the network. The product returned is the real row
-                      read by the real service method, not a fixture.
+                      Recorded {HANDSHAKE_PROVENANCE.date} with an out-of-process client calling the
+                      in-repo example app over the network. The product in the response is the row
+                      read by the app's service method. It doesn't come from a fixture.
                     </>
                   ),
                 },
@@ -224,7 +221,7 @@ export default function Home() {
             <div className="flex items-end gap-8">
               {[
                 { n: RECORD.verifiedTools, l: "verified tools" },
-                { n: RECORD.applications, l: "real applications" },
+                { n: RECORD.applications, l: "benchmark applications" },
                 { n: RECORD.wrongBindings, l: "wrong bindings", accent: true },
               ].map((s) => (
                 <div key={s.l}>
@@ -240,9 +237,9 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
               {[
-                { i: ICONS.eye, t: "Reads your source. Never modifies it." },
-                { i: ICONS.lock, t: "Read-only by design. Writes are refused at discovery, never generated." },
-                { i: ICONS.pin, t: "It refuses what it cannot prove, and names the reason." },
+                { i: ICONS.eye, t: "Reads your source code and doesn't modify it." },
+                { i: ICONS.lock, t: "Exposes read operations only. Writes are left out during discovery, so no tool is generated for them." },
+                { i: ICONS.pin, t: "Leaves out anything it can't verify and reports the reason." },
                 { i: ICONS.check, t: `Zero wrong bindings ${RECORD.scope}.` },
               ].map((x) => (
                 <div key={x.t} className="flex items-start gap-3">
@@ -260,24 +257,24 @@ export default function Home() {
       {/* 3 THE PROBLEM */}
       <Section id="problem">
         <Eyebrow>The problem</Eyebrow>
-        <H2>The software that runs the business predates the agent era.</H2>
+        <H2>Connecting an agent to an existing backend is hard</H2>
         <p className="mt-5 max-w-[62ch] text-[16.5px] leading-relaxed text-muted">
-          There are three usual ways to put an AI agent in front of a system like that. Each one is
-          bad in a different way.
+          Most business software was built before AI agents existed. There are three common ways to
+          put an agent in front of a system like that, and each has a serious drawback.
         </p>
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {[
             {
               h: "Rewrite it",
-              b: "Rebuild the system so it speaks a modern protocol. Expensive, slow, risky, and most of the time unnecessary.",
+              b: "You rebuild the system so it speaks a modern protocol. A rewrite is slow, expensive and risky, and most of the time it isn't needed.",
             },
             {
               h: "Hand-build every connection",
-              b: "Wire up each thing an agent might need, by hand. The work never ends, and it falls out of date the moment the system changes.",
+              b: "You write an integration by hand for each thing an agent might need. The work doesn't end, and each integration goes out of date when the system changes.",
             },
             {
               h: "Let the agent improvise",
-              b: "Point an agent at the system directly. The dangerous one. The agent can call the wrong thing on a wrong assumption, and you have no way to know it did.",
+              b: "You point an agent at the system directly. This is the dangerous option, because the agent can call the wrong operation based on a wrong assumption and you have no way to know it did.",
             },
           ].map((c) => (
             <div key={c.h} className="card p-7">
@@ -296,12 +293,12 @@ export default function Home() {
           <div className="flex items-start gap-4">
             <span className="icon-tile">{ICONS.check}</span>
             <div>
-              <h3 className="text-[18px] font-semibold">The fourth path: prove it from the source</h3>
+              <h3 className="text-[18px] font-semibold">What Tibyaan does instead</h3>
               <p className="mt-2 max-w-[68ch] text-[14.5px] leading-relaxed text-fg-soft">
-                Your backend already knows how to look up a customer, an order, an invoice. Tibyaan
-                reads the code your team maintains and exposes a read only when the structure shows
-                which real method backs it and what it returns. The set is smaller than your system,
-                and every entry in it is right.
+                Your backend already has methods that look up a customer, an order or an invoice.
+                Tibyaan reads the code your team maintains and exposes a read only when the code
+                structure shows which method backs it and what it returns. The resulting set of tools
+                covers part of your system, and each tool is bound to a method Tibyaan verified.
               </p>
             </div>
           </div>
@@ -314,7 +311,7 @@ export default function Home() {
       {/* 4 HOW IT WORKS */}
       <Section id="how" tint>
         <Eyebrow>How it works</Eyebrow>
-        <H2>Read, prove, refuse or emit, serve.</H2>
+        <H2>From source code to MCP tools in four steps</H2>
         <div
           className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[14px] sm:grid-cols-2 lg:grid-cols-4"
           style={{ background: "var(--line)", border: "1px solid var(--line)" }}
@@ -323,22 +320,22 @@ export default function Home() {
             {
               n: "01",
               t: "Read",
-              b: "Parses your source and maps the entities and read operations it finds. Files it cannot parse are skipped and named, never silently dropped.",
+              b: "Tibyaan parses your source and maps the entities and read operations it finds. Any file it can't parse is skipped and listed by name.",
             },
             {
               n: "02",
-              t: "Prove",
-              b: "Each candidate needs structural evidence: the real method that backs it, on the real repository of the real entity. Names carry no weight.",
+              t: "Verify",
+              b: "Each candidate read needs evidence in the code structure: the method that backs it, on the repository of the entity it reads. Naming conventions aren't used as evidence.",
             },
             {
               n: "03",
-              t: "Refuse or emit",
-              b: "Undecidable cases are refused with a located reason. Decided cases become verified tools. On a large app, expect most to be refused.",
+              t: "Include or refuse",
+              b: "A read that passes becomes a verified tool. A read Tibyaan can't verify is refused, and the scan output gives the reason. On a large app, expect most reads to be refused.",
             },
             {
               n: "04",
               t: "Serve",
-              b: "Your own build generates the manifest from your source, and a small runtime inside your app serves the tools to agents over MCP. The same model also emits an OpenAPI document.",
+              b: "Your build generates the manifest from your source, and a small runtime inside your app serves the tools to agents over MCP. The same model also produces an OpenAPI document.",
             },
           ].map((s) => (
             <div key={s.n} className="flex min-h-[220px] flex-col gap-3 p-7" style={{ background: "var(--surface)" }}>
@@ -353,13 +350,13 @@ export default function Home() {
         <div className="mt-14 grid grid-cols-1 items-center gap-x-16 gap-y-8 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <h3 className="text-[24px] font-semibold leading-tight" style={{ letterSpacing: "-0.03em" }}>
-              Adoption is two entries in your build file.
+              Add two entries to your build file
             </h3>
             <p className="mt-4 text-[15.5px] leading-relaxed text-muted">
-              A runtime dependency and a build plugin. Your own build generates the tool manifest
-              from your source, and the server runs inside your application's process, calling your
-              real methods. Remove the two entries and the layer is gone. Your code was never
-              touched.
+              You add a runtime dependency and a build plugin. Your build generates the manifest
+              from your source, and the MCP server runs inside your application's process and calls
+              your existing methods. To remove Tibyaan, delete the two entries. Your source code
+              isn't modified at any point.
             </p>
             <p className="mt-6">
               <Link href="/docs/getting-started/" className="link-arrow text-[15px]">
@@ -390,19 +387,21 @@ export default function Home() {
       <Section id="survey">
         <div className="grid grid-cols-1 gap-x-16 gap-y-10 lg:grid-cols-[1fr_1fr]">
           <div>
-            <Eyebrow>A real survey</Eyebrow>
-            <H2>Refusals are the product working, not failing.</H2>
+            <Eyebrow>An example survey</Eyebrow>
+            <H2>What refused reads look like</H2>
             <p className="mt-6 text-[15.5px] leading-relaxed text-fg-soft">
-              A large application does not turn into a hundred tools. It turns into a precise,
-              verified subset plus a named ledger of everything Tibyaan declined to expose. On the
-              ERP benchmark it found <strong>{ERP_SURVEY.discovered}</strong> capabilities and named
-              every one of the <strong>{ERP_SURVEY.failed + ERP_SURVEY.listRefused}</strong> reads it
-              refused, with no wrong binding.
+              A survey is the output of a scan. For a large application, expect a verified subset of
+              tools and a list that names each refused read, with the reason. On the ERP benchmark
+              Tibyaan found{" "}
+              <strong>{ERP_SURVEY.discovered}</strong> capabilities and refused{" "}
+              <strong>{ERP_SURVEY.failed + ERP_SURVEY.listRefused}</strong> reads, each listed by
+              name, with no wrong binding.
             </p>
             <p className="mt-4 text-[15.5px] leading-relaxed text-fg-soft">
-              Look at <IC>User</IC>: two methods both fit the shape of a read-by-id, so Tibyaan
-              refused rather than pick one. That refusal is the whole point. The number to watch is{" "}
-              <IC>mis-bound</IC>, and it stays <span style={{ color: "var(--accent)" }}>0</span>.
+              Take <IC>User</IC> as an example. Two methods both fit the shape of a read-by-id, so
+              Tibyaan refused the read instead of picking one. Refusals like this are expected. The
+              count to check is <IC>mis-bound</IC>, which is{" "}
+              <span style={{ color: "var(--accent)" }}>0</span> here.
             </p>
             <p className="mt-7">
               <Link href="/docs/reading-your-survey/" className="link-arrow text-[15px]">
@@ -432,8 +431,8 @@ export default function Home() {
                 flat
                 caption={
                   <>
-                    One line of the same unedited survey ({SURVEY_PROVENANCE.date}), and the four
-                    figures above restate its Totals line. The whole output is in the first tab at
+                    One line from the same unedited survey ({SURVEY_PROVENANCE.date}). The four
+                    figures above come from its Totals line. The full output is in the first tab at
                     the top of this page.
                   </>
                 }
@@ -452,20 +451,20 @@ export default function Home() {
       {/* 6 WHAT IT GENERATES */}
       <Section id="output" tint>
         <Eyebrow>What it generates</Eyebrow>
-        <H2>The honesty is legible in the output itself.</H2>
+        <H2>The generated files state their own limits</H2>
         <p className="mt-5 max-w-[68ch] text-[16px] leading-relaxed text-muted">
-          One verified model produces an MCP server and an OpenAPI document. The tool writes its own
-          limits into what it generates: a list read says the page envelope is not modeled, a partial
-          entity's schema names the fields it did not represent. Nothing here is retyped; both
-          snippets are copied from files the tool really generated.
+          One verified model produces an MCP server and an OpenAPI document. The description of a
+          list read says that the total count and page envelope aren't modeled, and the schema of a
+          partial entity names the fields it doesn't represent. Both snippets below are copied from files the tool
+          generated.
         </p>
         <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2">
           <Frame
             barLabel="tibyan/capabilities.json"
             caption={
               <>
-                From the real MCP manifest. {MCP_PROVENANCE.tool}, {MCP_PROVENANCE.date}. The second
-                description is the tool disclosing what it does not model.
+                From the generated MCP manifest. {MCP_PROVENANCE.tool}, {MCP_PROVENANCE.date}. The
+                second description states what the tool doesn't model.
               </>
             }
           >
@@ -479,9 +478,8 @@ export default function Home() {
             barLabel="openapi.json"
             caption={
               <>
-                From the real OpenAPI 3.0 document. {OPENAPI_PROVENANCE.tool}, {OPENAPI_PROVENANCE.date}.
-                The description states, in the artifact, exactly which source fields are not
-                represented.
+                From the generated OpenAPI 3.0 document. {OPENAPI_PROVENANCE.tool}, {OPENAPI_PROVENANCE.date}.
+                The description lists the source fields that aren't represented.
               </>
             }
           >
@@ -496,8 +494,8 @@ export default function Home() {
 
       {/* 7 WHAT IT DOES NOT DO (placed high, per the credibility play) */}
       <Section id="boundary">
-        <Eyebrow>What it does not do yet</Eyebrow>
-        <H2>Each of these is a boundary Tibyaan draws on purpose.</H2>
+        <Eyebrow>Current limits</Eyebrow>
+        <H2>What Tibyaan doesn't do yet</H2>
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
           {BOUNDARIES.map((b) => (
             <div key={b.k} className="card p-7">
@@ -509,23 +507,21 @@ export default function Home() {
           ))}
         </div>
         <p className="mt-8 max-w-[74ch] text-[15px] leading-relaxed text-muted">
-          The honest way past the structural boundary is{" "}
+          For a read that Tibyaan can't verify from the code structure, you can use{" "}
           <Link href="/docs/attestation/" className="prose-link">
             attestation
           </Link>
-          : a named person asserts what a read means, in a committed, reviewed file. The tool carries
-          the claim character for character, labels it human-attested on every surface, never counts
-          it among the verified tools, and refuses it loudly the moment the code it was asserted
-          against changes.
+          . A named person asserts what the read means in a file that is committed and reviewed.
+          Tibyaan ships the claim word for word, labels it as human-attested everywhere it appears,
+          and counts it separately from the verified tools. If the code the claim was
+          written against changes, Tibyaan refuses the claim with an error.
         </p>
       </Section>
 
       {/* 8 THE EVIDENCE */}
       <Section id="evidence" tint>
-        <Eyebrow>The evidence</Eyebrow>
-        <H2>
-          {RECORD.verifiedTools} verified tools. {RECORD.wrongBindings} wrong bindings.
-        </H2>
+        <Eyebrow>Evidence</Eyebrow>
+        <H2>Results on {RECORD.applications} benchmark applications</H2>
         <div className="card mt-10 overflow-x-auto">
           <table className="doc-table min-w-[680px]">
             <thead>
@@ -557,16 +553,18 @@ export default function Home() {
           </table>
         </div>
         <p className="mt-8 max-w-[76ch] text-[15px] leading-relaxed text-fg-soft">
-          Read these numbers honestly. Coverage is idiom-bound: two of the three apps share an
-          author, the apps discover through different rules, and your app's number depends on your
-          idioms. It could land anywhere in that range. The one guarantee that transfers is zero
-          wrong bindings. The third row is a real multi-module enterprise application, kept private
-          and shown by counts and shapes only. Preview your own app to see your real number before
-          you decide.
+          Together the three benchmark applications produced {RECORD.verifiedTools} verified tools
+          and {RECORD.wrongBindings} wrong bindings. Coverage depends on how an application is
+          written. Two of the three apps share an author, each app's capabilities were discovered
+          through different rules, and the number for your app could land anywhere in the range
+          shown in the table. The result that carries over is zero wrong bindings on every run, on
+          all three applications. The third row is a real multi-module enterprise Spring
+          application, kept private and shown by counts and shapes only. Run a scan on your own app
+          to see your number before you decide.
         </p>
         <p className="mt-6">
           <Link href="/evidence/" className="link-arrow text-[15px]">
-            The full record, with its ledgers <Arrow />
+            See the full results and ledgers <Arrow />
           </Link>
         </p>
       </Section>
@@ -576,7 +574,7 @@ export default function Home() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <Eyebrow>Documentation</Eyebrow>
-            <H2>Everything you need to run it on your own app.</H2>
+            <H2>Guides for running Tibyaan on your own app</H2>
           </div>
           <Link href="/docs/" className="link-arrow text-[15px]">
             Browse all docs <Arrow />
@@ -608,8 +606,8 @@ export default function Home() {
 
       {/* 10 REQUIREMENTS */}
       <Section id="requirements" tint>
-        <Eyebrow>Before you plan an adoption</Eyebrow>
-        <H2>v1 does not fit every aging Spring backend. Check before you spend a build change.</H2>
+        <Eyebrow>Requirements</Eyebrow>
+        <H2>v1 doesn't support every Spring backend</H2>
         <div className="card mt-10 overflow-hidden">
           {REQUIREMENTS.map((r, i) => (
             <div
@@ -629,13 +627,13 @@ export default function Home() {
         <div className="hero-backdrop" aria-hidden="true" />
         <div className="container-x relative py-[clamp(80px,12vh,136px)] text-center">
           <h2 className="display mx-auto max-w-[18ch] text-[clamp(34px,4.8vw,62px)]">
-            Preview your app. <span className="accent-serif">It changes nothing.</span>
+            Try it on <span className="accent-serif">your own application</span>
           </h2>
           <p className="mx-auto mt-7 max-w-[60ch] text-[17px] leading-relaxed text-muted">
-            The preview reads your source, writes nothing, and touches no build file. It shows you
-            exactly what Tibyaan would expose and what it would refuse, so you decide with the
-            evidence in front of you. Ran it already? Send us your numbers: every real survey shapes
-            what gets built next.
+            The scan reads your source, writes nothing and doesn't touch your build files. It shows
+            which reads Tibyaan would expose and which it would refuse, so you can decide based on
+            your own code. If you've already run it, email your survey to the maintainer. Surveys
+            from users' applications help decide what gets built next.
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <Link href="/docs/getting-started/" className="btn btn-primary">

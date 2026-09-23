@@ -108,11 +108,10 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <header className="relative">
-      <div className="hero-backdrop" aria-hidden="true" />
-      <div className="container-x relative py-[clamp(64px,10vh,112px)]">
+    <header>
+      <div className="container-x py-[clamp(56px,8vh,96px)]">
         <Eyebrow>{eyebrow}</Eyebrow>
-        <h1 className="display max-w-[18ch] text-[clamp(38px,5.6vw,68px)] text-fg">{title}</h1>
+        <h1 className="display max-w-[22ch] text-[clamp(34px,4.6vw,56px)] text-fg">{title}</h1>
         {children ? <Lead className="mt-7">{children}</Lead> : null}
       </div>
     </header>
