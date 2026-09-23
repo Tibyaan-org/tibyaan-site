@@ -28,7 +28,7 @@ export default function Connecting() {
       lead="Once the runtime dependency is in your application and the manifest is on the classpath, your app hosts an MCP server in its own process. This page shows what it serves, how to confirm it works, and how to point a client at it."
       toc={[
         { id: "serves", label: "What the runtime serves" },
-        { id: "verified", label: "Verified end to end" },
+        { id: "verified", label: "How the connection is tested" },
         { id: "smoke", label: "Confirm it yourself" },
         { id: "claude-code", label: "Claude Code" },
         { id: "stdio", label: "Claude Desktop and stdio clients" },
@@ -49,22 +49,23 @@ export default function Connecting() {
           <IC wrap>/mcp/message?sessionId=...</IC>
         </li>
         <li>
-          One MCP tool per capability. Each tool calls the real service method the capability is
-          bound to.
+          One MCP tool per capability. Each tool calls the service method its capability is bound
+          to.
         </li>
       </ul>
 
-      <H2 id="verified">Verified end to end</H2>
-      <p>This path is verified two ways, so the promise is not just asserted.</p>
+      <H2 id="verified">How the connection is tested</H2>
+      <p>The path from an MCP client to a service method is tested in two ways.</p>
       <ul>
         <li>
-          <strong>In process, on every build.</strong> An integration test boots a real Spring
-          context and a genuine MCP server and drives <IC>initialize</IC>, <IC>tools/list</IC>, and{" "}
-          <IC>tools/call</IC> against the real bean.
+          <strong>In process, on every build.</strong> An integration test boots a Spring context
+          and the MCP server, without mocks, and runs <IC>initialize</IC>, <IC>tools/list</IC>, and{" "}
+          <IC>tools/call</IC> against the service bean.
         </li>
         <li>
           <strong>Out of process, over the network.</strong> The example app was launched as a
-          normal jar and an external client ran the full handshake. The result, recorded verbatim:
+          normal jar, and an external client ran the full handshake. This is the output as it
+          was recorded:
         </li>
       </ul>
       <Frame
@@ -73,8 +74,8 @@ export default function Connecting() {
         caption={
           <>
             Recorded {HANDSHAKE_PROVENANCE.date} against the in-repo example app. The returned
-            product is the real row read by <IC>ProductService.findById</IC> from the app's store,
-            not a fixture. The version string is the one that run printed.
+            product is the row that <IC>ProductService.findById</IC> read from the app's store. It
+            isn't a test fixture. The version string is the one that run printed.
           </>
         }
       >
@@ -83,28 +84,28 @@ export default function Connecting() {
         </pre>
       </Frame>
       <p>
-        What is not mechanically verified is the configuration of any one specific desktop client,
-        because that is a GUI step on your machine. The protocol and the network path are verified;
-        the per-client wiring below is the standard approach, to confirm against your client's
-        current version.
+        These tests cover the protocol and the network path. They don't cover the configuration of
+        any specific desktop client, because that is a GUI step on your machine. The client setup
+        below is the standard approach, but check it against your client's current version.
       </p>
 
       <H2 id="smoke">Confirm it yourself</H2>
       <H3>A one-line smoke test</H3>
       <p>
         With the app running, open the SSE stream. The server should immediately send an{" "}
-        <IC>endpoint</IC> event naming the session's message URL, which proves the MCP server is
-        live and speaking the protocol. Press Ctrl-C to stop; the stream stays open by design.
+        <IC>endpoint</IC> event naming the session's message URL, which shows that the MCP server is
+        running and speaking the protocol. The stream stays open by design, so press Ctrl-C to stop.
       </p>
       <CodeBlock label="shell" lang="shell">{`curl -N http://localhost:8080/sse
 # event: endpoint
 # data: /mcp/message?sessionId=...`}</CodeBlock>
       <H3>A full handshake</H3>
       <p>
-        The repository ships <IC>scripts/verify-mcp-sse.py</IC>, which drives the whole flow using
-        only the Python standard library: open the stream, read the endpoint, <IC>initialize</IC>,{" "}
-        <IC>tools/list</IC>, and one <IC>tools/call</IC>. Point it at your own app by editing the{" "}
-        <IC>BASE</IC> URL, and change the final call to one of your discovered tools.
+        The repository includes <IC>scripts/verify-mcp-sse.py</IC>, which runs the whole flow using
+        only the Python standard library. It opens the stream, reads the endpoint, and sends{" "}
+        <IC>initialize</IC>, <IC>tools/list</IC>, and one <IC>tools/call</IC>. To run it against
+        your own app, edit the <IC>BASE</IC> URL and change the final call to one of your
+        discovered tools.
       </p>
       <CodeBlock label="shell" lang="shell">{`python scripts/verify-mcp-sse.py`}</CodeBlock>
 
@@ -114,11 +115,11 @@ export default function Connecting() {
 claude mcp list`}</CodeBlock>
       <p>
         Inside a session, <IC>/mcp</IC> shows the connected servers, and each capability appears as
-        a tool named <IC wrap>{"mcp__my-legacy-app__<capability>"}</IC>. You do not call that name
-        by hand: ask in plain language, and the agent calls the tool. For the example app, "get
+        a tool named <IC wrap>{"mcp__my-legacy-app__<capability>"}</IC>. You don't need to type
+        that name. Ask in plain language and the agent calls the tool. For the example app, "get
         product 5" makes the agent call <IC>getProduct</IC> with <IC>id</IC> 5 and read back the
-        real row. To scope the server to one project, add it to a project <IC>.mcp.json</IC> instead
-        of your user config.
+        row from the app's store. To scope the server to one project, add it to a project{" "}
+        <IC>.mcp.json</IC> instead of your user config.
       </p>
 
       <H2 id="stdio">Claude Desktop and other stdio-only clients</H2>
@@ -135,23 +136,24 @@ claude mcp list`}</CodeBlock>
   }
 }`}</CodeBlock>
       <p>
-        Confirm the exact command names and config format against your client's current
-        documentation; client configuration formats change faster than this project does.
+        Client configuration formats change faster than this project does, so check the command
+        names and config format against your client's current documentation.
       </p>
 
       <H2 id="transport">Transport caveat</H2>
       <p>
         The runtime serves the HTTP and SSE transport. The MCP ecosystem has been moving toward the
         newer Streamable HTTP transport. If your client supports only Streamable HTTP, you need a
-        bridge like the one above. Adding Streamable HTTP to the runtime is a candidate follow-up,
-        not built in v1.
+        bridge like the one above. Streamable HTTP support in the runtime is a candidate for later
+        work and isn't part of v1.
       </p>
 
       <H2 id="before">Before you expose it</H2>
       <Callout title="Read the security page first">
         <p>
-          The MCP endpoint has no authentication of its own and calls your real methods against
-          your real data. Bind it to localhost or keep it behind your own network controls. See{" "}
+          The MCP endpoint has no authentication of its own, and it calls your service methods
+          against your application's live data. Bind it to localhost or keep it behind your own
+          network controls. See{" "}
           <Link href="/docs/security/" className="prose-link">
             Security
           </Link>

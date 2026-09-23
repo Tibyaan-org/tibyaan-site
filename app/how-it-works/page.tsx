@@ -6,25 +6,25 @@ import { LINKS } from "../_content/claims";
 export const metadata: Metadata = {
   title: "How it works",
   description:
-    "What Tibyaan extracts, what proof means here, where the proof stops, and what adoption physically is.",
+    "How Tibyaan reads a Spring application, which read operations it can verify, what it leaves out, and what you add to your build to adopt it.",
   alternates: { canonical: "/how-it-works/" },
 };
 
 // The pipeline, as boxes. Purely explanatory: no numbers, no tool output.
 const PIPELINE = [
-  { k: "Your source", v: "The Spring application your team already maintains. Read, never modified." },
-  { k: "One verified model", v: "Entities and the read operations structure can prove. Everything else is refused, by name." },
-  { k: "Generated outputs", v: "An MCP tool manifest and an OpenAPI 3.0 document, from the same model." },
-  { k: "Served in place", v: "A runtime inside your own app serves the tools and calls your real methods." },
+  { k: "Your source", v: "The Spring application your team already maintains. Tibyaan reads it and doesn't modify it." },
+  { k: "One verified model", v: "The entities and the read operations that Tibyaan can verify from code structure. Everything else is refused and listed by name." },
+  { k: "Generated outputs", v: "An MCP tool manifest and an OpenAPI 3.0 document, both generated from the same model." },
+  { k: "Served in place", v: "A runtime inside your own app serves the tools and calls your existing methods." },
 ];
 
 export default function HowItWorks() {
   return (
     <>
-      <PageHeader eyebrow="How it works" title="One verified map. Many outputs. Nothing guessed.">
-        Tibyaan reads the Spring backend you already run, proves which read operations are safe to
-        expose, and serves them to agents in place, without touching your code. The rest of this
-        page is how.
+      <PageHeader eyebrow="How it works" title="From Spring source code to agent tools">
+        Tibyaan reads the Spring backend you already run, verifies which read operations are safe
+        to expose, and serves them to agents from inside your application. Your code stays as it
+        is. This page explains each step.
       </PageHeader>
 
       {/* the pipeline */}
@@ -46,43 +46,43 @@ export default function HowItWorks() {
 
       {/* the map */}
       <Section id="map">
-        <Eyebrow>The map</Eyebrow>
-        <H2>It builds one neutral description, and generates everything from it.</H2>
+        <Eyebrow>The model</Eyebrow>
+        <H2>One model of your application generates every output</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-fg-soft">
           <p>
-            Tibyaan reads your source and writes down the business objects it finds and the read
-            operations over them, in a form that belongs to no framework. That single description is
-            the asset. From it, the tool generates the outputs an agent or a client needs: today an
-            MCP server (the open protocol agents use to call tools) and an OpenAPI document.
+            Tibyaan reads your source and records the business objects it finds and the read
+            operations over them, in a format that isn't tied to any framework. From that one
+            description it generates the outputs an agent or a client needs. Today those are an MCP
+            server (MCP is the open protocol agents use to call tools) and an OpenAPI document.
           </p>
           <p>
-            Because both come from the same description, they cannot disagree, and rebuilding
-            regenerates them from whatever your source now says. The same input always produces the
-            same output.
+            Both outputs come from the same description, so they can't disagree with each other.
+            Each build regenerates them from the current state of your source, and the same input
+            always produces the same output.
           </p>
         </div>
       </Section>
 
       {/* what proof means */}
       <Section id="proof" tint>
-        <Eyebrow>What proof means here</Eyebrow>
-        <H2>Structure decides, or nothing does.</H2>
+        <Eyebrow>Verification</Eyebrow>
+        <H2>Which reads are exposed and which are refused</H2>
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {[
             {
               h: "Exposed",
               tone: "var(--ok)",
-              b: "A read is exposed when a framework contract proves it. A standard repository load by primary key is a load by primary key by contract, not because a method happens to be named getById.",
+              b: "A read is exposed when Tibyaan can verify what it does from a framework contract. A standard repository load by primary key qualifies because the framework guarantees that behavior. A method that only happens to be named getById doesn't qualify.",
             },
             {
               h: "Refused, ambiguous",
               tone: "var(--accent)",
-              b: "When two methods both fit the shape of the read, the tool refuses rather than pick one. A real example: an entity with both findById and findByUsername is refused, not guessed.",
+              b: "When two methods both fit the shape of the read, Tibyaan refuses the read instead of picking one. For example, an entity that has both findById and findByUsername is refused.",
             },
             {
-              h: "Refused, unprovable",
+              h: "Refused, unverifiable",
               tone: "var(--accent)",
-              b: "When meaning is not in the structure, it is refused. A check sitting between the load and the return could be an authorization rule; the tool cannot tell, so it will not claim.",
+              b: "When the code structure doesn't show what a read means, the read is refused. A check between the load and the return could be an authorization rule. Tibyaan can't tell, so it leaves the read out.",
             },
           ].map((c) => (
             <div key={c.h} className="card p-7">
@@ -94,28 +94,28 @@ export default function HowItWorks() {
           ))}
         </div>
         <p className="mt-8 max-w-[74ch] text-[15.5px] leading-relaxed text-muted">
-          Method names, parameter names, and comments carry no weight anywhere in this. They are the
-          easiest thing to get wrong, and a tool an agent trusts cannot lean on them.
+          Method names, parameter names, and comments are never used as evidence. They are easy to
+          get wrong, so a tool that agents rely on shouldn't depend on them.
         </p>
       </Section>
 
       {/* the ceiling */}
       <Section id="ceiling">
-        <Eyebrow>Where the proof stops</Eyebrow>
-        <H2>A structural tool tops out at what structure can prove, and says so.</H2>
+        <Eyebrow>Limits</Eyebrow>
+        <H2>What Tibyaan can't verify</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-fg-soft">
           <p>
-            Today that means unfiltered reads by id and unfiltered lists. The filtered majority of a
-            real application's read API, the searches and the category lookups, is beyond structural
-            proof: a filter's meaning is a claim, and a claim in a tool description is something an
-            agent acts on. So the tool refuses it rather than present a guess as verified.
+            Today Tibyaan verifies unfiltered reads by id and unfiltered lists. Most of an
+            application's read API is filtered reads, such as searches and category lookups, and
+            Tibyaan can't verify what a filter means from code structure. An agent acts on whatever
+            a tool description says, so Tibyaan refuses filtered reads.
           </p>
           <p>
-            Where that boundary can move honestly, it moves by a person's word, never by a guess. A
-            named human can attest what a refused read selects or returns, in a committed, reviewed
-            file. The tool carries it as exactly that: human-attested, labeled on every surface,
-            never counted as verified, fingerprinted to the code it was asserted against, and refused
-            loudly the moment that code changes.
+            Some refused reads can be covered by attestation. A named person states what the read
+            selects or returns, in a file that is committed and reviewed. Tibyaan labels the
+            resulting capability as human-attested everywhere it appears and never counts it as
+            verified. The attestation is fingerprinted to the code it was written against, and if
+            that code changes, Tibyaan refuses the capability and reports it.
           </p>
         </div>
         <p className="mt-8">
@@ -127,23 +127,23 @@ export default function HowItWorks() {
 
       {/* in place */}
       <Section id="in-place" tint>
-        <Eyebrow>In place, at build time</Eyebrow>
-        <H2>Adoption is a dependency and a build step. Nothing is hosted by us.</H2>
+        <Eyebrow>Adoption</Eyebrow>
+        <H2>What you add to your application</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16.5px] leading-relaxed text-fg-soft">
           <p>
             You add one runtime dependency and one build plugin to your application. Your own build
-            generates the tool manifest from your source and places it on the classpath. The server
-            runs inside your application's own process and calls your real methods. There is no
-            Tibyaan service in the path at runtime, nothing metered, no vendor infrastructure.
+            generates the manifest from your source and places it on the classpath. The server runs
+            inside your application's process and calls your existing methods. Nothing at runtime
+            depends on a Tibyaan service or on vendor infrastructure, and nothing is metered.
           </p>
           <p>
-            Remove the two build-file entries and the layer is gone. You never touched your original
-            code.
+            To remove Tibyaan, delete the two build-file entries. Your original code is never
+            changed.
           </p>
         </div>
         <div className="mt-9 flex flex-wrap items-center gap-3">
           <Link href="/docs/getting-started/" className="btn btn-primary">
-            See the real quickstart
+            Go to the quickstart
             <Arrow />
           </Link>
           <Link href="/docs/" className="btn btn-ghost">
@@ -151,7 +151,7 @@ export default function HowItWorks() {
           </Link>
         </div>
         <p className="mt-8 text-[14px] text-muted">
-          The full design, all seventeen volumes and the dated benchmark ledgers, lives in the{" "}
+          The full design, in seventeen volumes, and the dated benchmark ledgers are in the{" "}
           <ExtLink href={LINKS.docs} className="prose-link">
             repository
           </ExtLink>

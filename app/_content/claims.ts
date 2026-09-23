@@ -30,7 +30,7 @@ export const RECORD = {
   applications: 3,
   wrongBindings: 0,
   // "unmodified" is deliberately not claimed: the pms copy's corrupted files were repaired.
-  scope: "across three real benchmark applications, on every run",
+  scope: "across three benchmark applications, on every run",
 } as const;
 
 // C-5, C-6, C-7: the three benchmark rows. The third is redacted by rule.
@@ -43,7 +43,7 @@ export const BENCHMARKS = [
     byId: 16,
     list: 9,
     misBound: 0,
-    note: "Services return entities; discovers well.",
+    note: "Services return entities, so discovery works well.",
     source: "docs/experiments/third-app-trial.md", // C-5
     redacted: false,
   },
@@ -55,7 +55,7 @@ export const BENCHMARKS = [
     byId: 5,
     list: 0,
     misBound: 0,
-    note: "Services return view objects; most reads refused by name.",
+    note: "Services return view objects, so most reads are refused and listed in the scan output.",
     source: "docs/experiments/second-app-trial.md section 9 (re-baseline 2026-07-20)", // C-6
     redacted: false,
   },
@@ -67,7 +67,7 @@ export const BENCHMARKS = [
     entities: 111,
     capabilities: 4,
     misBound: 0,
-    note: "Reuses entity names across bounded contexts; emits valid output where simple-name keying could not.",
+    note: "Reuses entity names across bounded contexts. Tibyaan emits valid output for it, which keying entities by simple class name couldn't do.",
     source: "docs/experiments/enterprise-benchmark.md (redacted)", // C-7
     redacted: true,
   },
@@ -87,26 +87,26 @@ export const ERP_SURVEY = {
 export const REFUSAL_CAUSES = [
   {
     code: "NO_BACKING_METHOD",
-    plain: "No service method structurally backs this read, so nothing is exposed.",
+    plain:
+      "The tool found no service method whose structure shows that it backs this read, so nothing is exposed.",
   },
   {
     code: "AMBIGUOUS_BINDING",
-    plain:
-      "Two or more methods both fit the shape of the read; the tool refuses rather than pick one.",
+    plain: "Two or more methods fit the shape of the read, so the tool skips it instead of picking one.",
   },
   {
     code: "NO_IDENTIFIER",
     plain:
-      "The entity has no identifier that maps to a bindable primitive, so a read-by-id cannot be formed.",
+      "The entity has no identifier that maps to a supported primitive type, so the tool can't build a read-by-id.",
   },
   {
     code: "COMPOSITE_KEY",
     plain:
-      "The entity's identifier is a composite key, so no single-identifier read-by-id is formed.",
+      "The entity's identifier is a composite key. A read-by-id needs a single identifier, so the tool doesn't build one.",
   },
   {
     code: "LIST_AMBIGUOUS",
-    plain: "More than one list-all candidate exists; the tool will not choose between them.",
+    plain: "More than one method could be the list-all read, and the tool doesn't choose between them.",
   },
 ] as const;
 
@@ -114,12 +114,12 @@ export const REFUSAL_CAUSES = [
 export const REQUIREMENTS = [
   {
     k: "Host application",
-    v: "Spring Boot 3.x on Java 17 or later. A Boot 2.x or Java 8 backend cannot host the runtime as-is.",
+    v: "Spring Boot 3.x on Java 17 or later. A Boot 2.x or Java 8 backend can't host the runtime as-is.",
   },
-  { k: "Build tool", v: "Maven. The build-time manifest generation ships as a Maven plugin." },
+  { k: "Build tool", v: "Maven. Manifest generation at build time ships as a Maven plugin." },
   {
     k: "Preview CLI",
-    v: "Needs only Java 17. It reads source and never runs your application.",
+    v: "Requires only Java 17. It reads your source code and doesn't run your application.",
   },
   {
     k: "Transport",
@@ -132,19 +132,19 @@ export const REQUIREMENTS = [
 export const BOUNDARIES = [
   {
     k: "Filtered reads",
-    v: "findByCategory, search, and similar are never discovered. A parameter's meaning is a claim the tool cannot verify from structure, and a tool description an agent acts on must not carry an unverified claim. Since 0.3.0 a person can carry one as a human-attested capability, labeled as such, never as verified.",
+    v: "Methods such as findByCategory and search aren't discovered. Tibyaan can't verify what a filter parameter means from the structure of the code. An agent acts on a tool's description, so Tibyaan doesn't generate a description it can't verify. Since 0.3.0 you can add a filtered read as a human-attested capability, which is labeled as attested and isn't counted as verified.",
   },
   {
     k: "Writes and actions",
-    v: "Refused at the discovery level until an explicit policy gate exists. A write is never generated into the manifest, and a write cannot be attested either.",
+    v: "Discovery leaves these out until an explicit policy gate exists. A write is never generated into the manifest, and a write can't be attested.",
   },
   {
-    k: "List envelopes",
-    v: "Custom paged result-set wrapper types are not seen through by discovery. The unfiltered list is modeled; what a wrapped variant returns is a claim for attestation, not a guess.",
+    k: "Paged list wrappers",
+    v: "Discovery doesn't look inside custom paged result-set wrapper types. It models the unfiltered list, and you can attest what a wrapped variant returns.",
   },
   {
     k: "Non-Spring stacks",
-    v: "The model is framework-neutral by design, but only the Spring source provider exists today.",
+    v: "The capability model is framework-neutral, but Spring is the only source provider available today.",
   },
 ] as const;
 

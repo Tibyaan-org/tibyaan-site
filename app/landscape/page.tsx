@@ -6,71 +6,71 @@ import { LINKS } from "../_content/claims";
 export const metadata: Metadata = {
   title: "Approach",
   description:
-    "Two honest ways to make an existing system operable by AI agents: observe it from the outside, or prove it from the inside. Where each is the right choice, stated without a winner.",
+    "A comparison of two ways to make an existing system usable by AI agents: observing the running system from the outside, or verifying it from its source code. It also covers where each approach fits.",
   alternates: { canonical: "/landscape/" },
 };
 
 const AXES = [
   {
     axis: "Input",
-    outside: "A running system you do not own and cannot see inside. All you can do is drive it and observe.",
-    inside: "The source of a system you own, read as a white box.",
+    outside: "A running system that you don't own and can't see inside. You can only drive it and observe what it does.",
+    inside: "The source code of a system you own, which the tool reads directly.",
   },
   {
     axis: "Method",
-    outside: "Infer the system's shape and actions, then empirically verify the inference works, discarding low-coverage results.",
-    inside: "Prove each capability from framework contracts and code structure. Anything unprovable is refused with a located reason.",
+    outside: "Infer the system's structure and actions, test that the inference works, and discard results with low coverage.",
+    inside: "Verify each capability from framework contracts and code structure. Anything that can't be verified is refused, with the reason.",
   },
   {
     axis: "Truth model",
-    outside: "Empirical: it worked when verified, and is re-verified over time as the system drifts.",
-    inside: "Structural: the binding is proven from source, and regenerated from source at build time.",
+    outside: "The evidence is empirical. A result worked when it was tested, and it is tested again over time as the system changes.",
+    inside: "The evidence is structural. Each binding is verified from the source and regenerated from the source at build time.",
   },
   {
     axis: "Failure mode",
-    outside: "May occasionally act wrongly; relies on verification and recovery to catch and repair it. Coverage bought with a safety net.",
-    inside: "Refuses at generation time when uncertain, so the failure surface is coverage, not correctness. Trust bought with a coverage ceiling.",
+    outside: "Can occasionally take a wrong action, and relies on verification and recovery to catch and repair it. The benefit is broader coverage.",
+    inside: "Refuses at generation time when it is uncertain, so its failures are missing capabilities instead of wrong ones. The cost is a limit on coverage.",
   },
   {
     axis: "Best domain",
-    outside: "The open web and third-party systems with no API and no source.",
-    inside: "Backends whose source the adopter owns.",
+    outside: "The open web and third-party systems that have no API and no source available.",
+    inside: "Backends whose source code you own.",
   },
 ];
 
 export default function Landscape() {
   return (
     <>
-      <PageHeader eyebrow="Approach" title="Two honest ways to make a system operable by agents.">
-        To put an AI agent in front of an existing system, you can work from the outside, driving
-        the running system and observing its behavior, or from the inside, reading the source you
-        own and proving its structure. Tibyaan is the inside-out one. This page compares the two
-        approaches at the category level, without naming any product, and without a winner.
+      <PageHeader eyebrow="Approach" title="Two ways to make an existing system usable by agents">
+        To put an AI agent in front of an existing system, you can work from the outside by driving
+        the running system and observing its behavior, or from the inside by reading the source you
+        own and verifying its structure. Tibyaan takes the inside-out approach. This page compares
+        the two approaches in general terms. It doesn't name any product or pick a winner.
       </PageHeader>
 
       {/* convergence */}
       <Section id="convergence">
-        <Eyebrow>The shared conclusion</Eyebrow>
-        <H2>Both roads lead to a small, typed, pre-verified tool interface.</H2>
+        <Eyebrow>What they share</Eyebrow>
+        <H2>Both approaches arrive at a small, typed, pre-verified tool interface</H2>
         <div className="mt-8 max-w-[74ch] space-y-5 text-[16px] leading-relaxed text-fg-soft">
           <p>
-            Built independently, the outside-in and inside-out approaches reach the same shape: do not
-            hand the agent the raw surface, whether that is a raw web page or raw code. Pre-map the
-            system into a small, typed, verified-before-served set of tools, and expose it over MCP,
-            the open protocol agents use to call tools.
+            The outside-in and inside-out approaches were built independently, and they reach the
+            same design. Neither one hands the agent the raw surface, whether that is a web page or
+            source code. Both map the system ahead of time into a small, typed set of tools that
+            are verified before they are served, and both expose those tools over MCP, the open
+            protocol agents use to call tools.
           </p>
           <p>
-            That two approaches converge on the same shape from opposite sides of the
-            source-availability line is real evidence the shape of the idea is sound. It is not
-            evidence of anything more, and this page does not stretch it into one.
+            Two approaches reaching the same design, one with access to the source and one without,
+            is some evidence that the design is sound. It isn't evidence of anything beyond that.
           </p>
         </div>
       </Section>
 
       {/* the two approaches */}
       <Section id="axes" tint>
-        <Eyebrow>Where they differ</Eyebrow>
-        <H2>Outside-in observes. Inside-out proves.</H2>
+        <Eyebrow>Comparison</Eyebrow>
+        <H2>How the two approaches differ</H2>
         <div className="card mt-10 overflow-x-auto">
           <table className="doc-table min-w-[760px]">
             <caption className="sr-only">
@@ -82,7 +82,7 @@ export default function Landscape() {
                 <th scope="col" />
                 <th scope="col">Outside-in (observe)</th>
                 <th scope="col" style={{ color: "var(--accent)" }}>
-                  Inside-out (prove), Tibyaan
+                  Inside-out (verify), Tibyaan
                 </th>
               </tr>
             </thead>
@@ -107,38 +107,41 @@ export default function Landscape() {
 
       {/* where each is right */}
       <Section id="right">
-        <Eyebrow>Where each is the right choice</Eyebrow>
-        <H2>Neither wins in the abstract. The input decides.</H2>
+        <Eyebrow>When to use which</Eyebrow>
+        <H2>The right approach depends on whether you can read the source</H2>
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="card space-y-4 p-7 text-[15.5px] leading-relaxed text-fg-soft">
-            <div className="label">A system you cannot read</div>
+            <div className="label">A system you can't read</div>
             <p>
-              For a system you cannot read, a third-party site with no API, black-box observation is
-              not merely reasonable, it is the only option, and inferring then empirically verifying is
-              the correct method: verification bounds the error of a guess that cannot be avoided.
+              For a system you can't read, such as a third-party site with no API, observing it as a
+              black box is the only option. Inferring its behavior and then testing the inference is
+              the correct method there, because the guess can't be avoided and verification limits
+              how wrong it can be.
             </p>
             <p>
-              Tibyaan cannot run there at all. With no source to read, there is nothing to prove.
+              Tibyaan can't run on a system like that, because it has no source to read.
             </p>
           </div>
           <div className="card space-y-4 p-7 text-[15.5px] leading-relaxed text-fg-soft">
             <div className="label" style={{ color: "var(--accent)" }}>A backend you own</div>
             <p>
-              For a backend you own, the source is the ground truth, and reading it is strictly
-              stronger evidence than observing behavior from outside. Structural proof removes the
-              guess rather than bounding it.
+              For a backend you own, the source code defines what the system does, and reading it
+              gives stronger evidence than observing behavior from outside. Verifying from code
+              structure removes the guess, while testing from outside can only limit how wrong it
+              is.
             </p>
             <p>
-              Which trade is right depends on blast radius. A failed consumer-web errand is retried and
-              shrugged off, so coverage-with-recovery fits there. A business backend silently reading
-              the wrong entity into an agent's context is the failure Tibyaan exists to never produce,
-              so refusal-over-guessing fits here.
+              Which trade-off is right depends on how much damage a mistake can do. A failed task on
+              a consumer website can be retried at little cost, so broad coverage with recovery fits
+              there. In a business backend, reading the wrong entity into an agent's context without
+              anyone noticing is the failure Tibyaan is built to prevent, so refusing uncertain reads
+              fits here.
             </p>
           </div>
         </div>
         <p className="mt-10 max-w-[74ch] text-[15px] leading-relaxed text-muted">
-          The full, sourced comparison against a specific external system, held to a stricter standard
-          than this page (their claims marked as vendor claims, ours cited), lives in the repository:{" "}
+          The repository has a full, sourced comparison against a specific external system. It marks
+          that system's claims as vendor claims and cites the sources for Tibyaan's. See{" "}
           <ExtLink href={LINKS.landscapeDoc} className="prose-link">
             docs/competitive-landscape.md
           </ExtLink>
@@ -146,7 +149,7 @@ export default function Landscape() {
         </p>
         <p className="mt-8">
           <Link href="/how-it-works/" className="link-arrow text-[15px]">
-            How the inside-out proof works <Arrow />
+            How the inside-out approach works <Arrow />
           </Link>
         </p>
       </Section>

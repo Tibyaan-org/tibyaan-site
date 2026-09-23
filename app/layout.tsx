@@ -30,16 +30,16 @@ const SITE_URL = process.env.SITE_URL || "https://tibyaan-org.github.io";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Tibyaan: AI agents for the backend you already run",
+    default: "Tibyaan: connect AI agents to your Spring backend",
     template: "%s · Tibyaan",
   },
   description:
-    "Tibyaan reads your Spring application's source, exposes only the read operations it can prove, and serves them to AI agents over MCP. Everything it cannot prove, it refuses, with the reason.",
+    "Tibyaan reads your Spring application's source and serves the read operations it can verify to AI agents over MCP, from inside your app. Anything it can't verify is left out, and the scan output tells you why.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Tibyaan: AI agents for the backend you already run",
+    title: "Tibyaan: connect AI agents to your Spring backend",
     description:
-      "Every tool proven, or refused. Zero wrong bindings across three real benchmark applications.",
+      "Tibyaan turns the read operations it can verify from your source code into MCP tools. Zero wrong bindings across three benchmark applications, on every run.",
     type: "website",
     url: "/",
     siteName: "Tibyaan",

@@ -39,7 +39,6 @@
   --code-dim: #8a8276;
   --code-line: #27231e;
   --glow: rgba(240, 116, 63, 0.16);
-  --grid: rgba(245, 240, 232, 0.045);
   --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
 }
 
@@ -70,7 +69,6 @@
   --code-dim: #8a8276;
   --code-line: #2b2721;
   --glow: rgba(180, 68, 29, 0.1);
-  --grid: rgba(24, 21, 18, 0.05);
   --shadow: 0 24px 60px -28px rgba(60, 40, 20, 0.28);
 }
 
@@ -311,23 +309,12 @@
     flex: none;
   }
 
-  /* hero backdrop: a faint grid that fades out, under an ember glow */
+  /* hero backdrop: one soft glow behind the home page headline, nothing else */
   .hero-backdrop {
     position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-  }
-  .hero-backdrop::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 30%, transparent 78%);
-    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 30%, transparent 78%);
   }
   .hero-backdrop::after {
     content: "";
@@ -742,10 +729,6 @@
     margin-top: 0.6rem;
   }
 
-  /* ---------- motion ---------- */
-  .fade-up {
-    animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  }
 
   /* ---------- a11y ---------- */
   .sr-only {
@@ -775,16 +758,5 @@
   }
   .skip-link:focus {
     top: 1rem;
-  }
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
