@@ -48,7 +48,8 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-[36ch] text-[14px] leading-relaxed text-muted">
-              AI agents for the backend you already run. Every tool proven, or refused.
+              Connect AI agents to the Spring backend you already run, through read operations
+              verified from your source code.
             </p>
             <p className="mt-4 max-w-[36ch] text-[13px] leading-relaxed text-faint">
               tibyān: classical Arabic for clear exposition, making something evident.
@@ -87,7 +88,7 @@ export function Footer() {
             {META.groupId} · {META.license} · v{META.version}
           </span>
           <span className="label" style={{ textTransform: "none", letterSpacing: "0.02em" }}>
-            Open source. Verified, not asserted.
+            Open source
           </span>
         </div>
       </div>

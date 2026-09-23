@@ -18,13 +18,13 @@ export default function MultiModule() {
     <DocPage
       href="/docs/multi-module/"
       title="Multi-module applications"
-      lead="You do not scan a multi-module application one module at a time. You point Tibyaan at the whole application once, and it produces one manifest that covers every module. If you scanned a single module and saw only that module's capabilities, this is why, and this is the fix."
+      lead="Scan a multi-module application once, from its root, instead of one module at a time. Tibyaan reads the whole application and produces one manifest that covers every module. If you scanned a single module and saw only that module's capabilities, this page explains why and how to fix it."
       toc={[
         { id: "scope", label: "How scan scope works" },
         { id: "preview", label: "Preview the whole application" },
         { id: "adopt", label: "Point the plugin at the reactor root" },
         { id: "cost", label: "Scope and cost" },
-        { id: "same-name", label: "Two modules, one entity name" },
+        { id: "same-name", label: "Same entity name in two modules" },
       ]}
       source={{ label: "docs/MULTI-MODULE.md", href: LINKS.multiModuleDoc }}
     >
@@ -33,47 +33,47 @@ export default function MultiModule() {
         <IC>{"tibyan scan <path>"}</IC> walks the entire directory tree under the path you give it
         and reads every <IC>.java</IC> file it finds. It skips only build and tooling directories (
         <IC>target</IC>, <IC>build</IC>, <IC>out</IC>, <IC>bin</IC>, <IC>.git</IC>, <IC>.idea</IC>,{" "}
-        <IC>.mvn</IC>). It does not stop at a module boundary. Two consequences follow.
+        <IC>.mvn</IC>), and it doesn't stop at module boundaries. This has two consequences.
       </p>
       <ol>
         <li>
           <strong>One scanned root produces one manifest.</strong> The <IC>module</IC> field in the
-          manifest is simply the name of the directory you scanned. It is a label for the source
-          root, nothing more.
+          manifest is the name of the directory you scanned. It is only a label for the source
+          root.
         </li>
         <li>
-          <strong>Discovery is resolved against exactly the files you scan.</strong> Types in
-          modules you did not scan are treated as external library types, the same as{" "}
-          <IC>java.util.List</IC>. A read whose entity, repository, or return type lives outside
-          the scanned root is invisible.
+          <strong>Discovery only sees the files you scan.</strong> Types in modules you didn't
+          scan are treated as external library types, the same as <IC>java.util.List</IC>. A read
+          whose entity, repository, or return type lives outside the scanned root isn't
+          discovered.
         </li>
       </ol>
       <p>
         This is why scanning module by module and scanning the whole application can give different
-        results. It is not a bug in either run; it is the direct meaning of "resolved from your own
-        source". Scan at the scope you intend to serve.
+        results. Neither result is a bug, because each run resolves types only from the source it
+        was given. Scan at the scope you intend to serve.
       </p>
 
       <H2 id="preview">Preview the whole application</H2>
       <p>
-        Point the CLI at the reactor root, exactly as you would a single module. This reads source
-        and writes nothing:
+        Point the CLI at the reactor root, the same way you would for a single module. The scan
+        reads your source and writes nothing:
       </p>
       <CodeBlock label="shell" lang="shell">{`java -jar ${JAR} scan /path/to/your-reactor-root --report survey.md`}</CodeBlock>
       <p>
-        Where a single-module scan and a reactor scan disagree, the survey's refusal lines name the
-        cause. The most common cross-module cause is an ambiguous simple type name: if two modules
-        declare a type with the same simple name and a service references it by that bare name,
-        Tibyaan refuses rather than guess which one is meant. A single module in isolation has no
-        such ambiguity, so a read can be discovered there and refused at the wider scope, or the
-        reverse.
+        When a single-module scan and a reactor scan disagree, the refusal lines in the survey give
+        the cause. The most common cross-module cause is an ambiguous simple type name. If two
+        modules declare a type with the same simple name and a service refers to it by that bare
+        name, Tibyaan can't tell which one is meant, so it refuses the read. A single module
+        scanned on its own has no such ambiguity, so a read can be discovered there and refused at
+        the wider scope, or the reverse.
       </p>
 
       <H2 id="adopt">Point the plugin at the reactor root</H2>
       <p>
-        The build plugin runs once per module it is bound to, and by default scans only that module.
-        For a multi-module application you want one manifest, covering the domain modules your app
-        serves, on the classpath of the module that actually runs.
+        The build plugin runs once per module it is bound to, and by default it scans only that
+        module. For a multi-module application you want one manifest that covers the domain modules
+        your app serves, on the classpath of the module that runs.
       </p>
       <ol>
         <li>
@@ -103,39 +103,39 @@ export default function MultiModule() {
   </executions>
 </plugin>`}</CodeBlock>
       <p>
-        Confirm it resolved to the root you expect by checking the <IC>module</IC> field of the
-        generated <IC wrap>target/classes/tibyan/capabilities.json</IC>: it will be your reactor
-        root's directory name. If it does not resolve correctly (it depends on where you invoke
+        To confirm it resolved to the root you expect, check the <IC>module</IC> field of the
+        generated <IC wrap>target/classes/tibyan/capabilities.json</IC>. It will be your reactor
+        root's directory name. If it doesn't resolve correctly (it depends on where you invoke
         Maven and on your reactor layout), set an explicit path instead:
       </p>
       <CodeBlock label="shell" lang="shell">{`mvn package -Dtibyan.sourceRoot=/absolute/path/to/your-reactor-root`}</CodeBlock>
-      <Callout title="Preview first, always">
+      <Callout title="Preview before you adopt">
         <p>
-          Run the CLI scan at the same root you will configure, read the survey, and adopt only if
-          it convinces you. The plugin runs the identical scan, so what the preview shows at a given
+          Run the CLI scan at the same root you plan to configure, and read the survey before you
+          decide to adopt. The plugin runs the identical scan, so what the preview shows at a given
           root is what the plugin will generate at that root.
         </p>
       </Callout>
 
       <H2 id="cost">Scope and cost</H2>
       <p>
-        Scanning the whole reactor reads every module's source at build time. That is read-only and
-        it is source parsing, not compilation, but it does mean the manifest reflects every module
-        in scope. If you deliberately want to expose only one bounded context, scan only that
-        context's source root instead. Match the scan scope to what you intend to serve.
+        Scanning the whole reactor reads every module's source at build time. The scan is read-only
+        and parses source without compiling it, but the manifest then reflects every module in
+        scope. If you want to expose only one bounded context, scan only that context's source
+        root. Match the scan scope to what you intend to serve.
       </p>
 
-      <H2 id="same-name">Two modules, one entity name</H2>
+      <H2 id="same-name">Same entity name in two modules</H2>
       <p>
-        Tibyaan keys entities by fully qualified class name, so two modules that legitimately reuse
-        a simple entity name, for example <IC>billing.Invoice</IC> and <IC>sales.Invoice</IC>, are
-        distinct and both survive, with disambiguated display names.
+        Tibyaan keys entities by fully qualified class name, so two modules can reuse a simple
+        entity name, for example <IC>billing.Invoice</IC> and <IC>sales.Invoice</IC>. Both are kept
+        as distinct entities, with disambiguated display names.
       </p>
       <p>
-        The one hard failure is a genuine split-package clash: the same fully qualified name
-        declared by two source files under the scanned root. That fails loudly with a located error
-        rather than silently merging them. It can only arise when a scan spans modules, and the
-        message names the clashing key. See also the{" "}
+        The exception is a split-package clash, where two source files under the scanned root
+        declare the same fully qualified name. In that case the scan fails with an error that gives
+        the location and names the clashing key, and the two declarations aren't merged. This can
+        only happen when a scan spans modules. See also the{" "}
         <Link href="/docs/faq/" className="prose-link">
           FAQ
         </Link>

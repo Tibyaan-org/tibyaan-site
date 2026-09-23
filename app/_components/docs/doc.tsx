@@ -52,7 +52,7 @@ export function DocPage({
             <ExtLink href={source.href} className="prose-link">
               {source.label}
             </ExtLink>{" "}
-            in the repository. If this page and that document ever disagree, the repository wins.
+            in the repository. If this page and that document disagree, follow the document.
           </p>
         ) : null}
 

@@ -16,7 +16,7 @@ export default function MavenPlugin() {
     <DocPage
       href="/docs/maven-plugin/"
       title="Maven plugin"
-      lead="The build plugin runs the same pipeline the CLI runs, during your application's build, and writes the tool manifest onto the classpath. Nothing is committed by hand, and rebuilding regenerates it from whatever your source now says."
+      lead="The Maven plugin runs the same pipeline as the CLI during your application's build and writes the manifest to the classpath. You don't commit the manifest, because each build regenerates it from your current source."
       toc={[
         { id: "bound", label: "Bound execution" },
         { id: "one-off", label: "One-off invocation" },
@@ -46,7 +46,7 @@ export default function MavenPlugin() {
       <CodeBlock label="shell" lang="shell">{`mvn package`}</CodeBlock>
 
       <H2 id="one-off">One-off invocation</H2>
-      <p>Run the goal directly with its fully qualified coordinates, with no pom change:</p>
+      <p>To run the goal without changing your pom, use its fully qualified coordinates:</p>
       <CodeBlock label="shell" lang="shell">{`mvn ${META.groupId}:tibyan-maven-plugin:${META.version}:generate`}</CodeBlock>
       <p>
         The short form <IC>mvn tibyan:generate</IC> also works if the plugin group is on your Maven
@@ -61,19 +61,19 @@ export default function MavenPlugin() {
           ["Output", <><IC wrap>tibyan/capabilities.json</IC> in the classpath output directory (<IC wrap>target/classes</IC>).</>],
           [
             "Resilience",
-            "Resilient by default: an unparseable file is skipped and named at WARN, and the manifest is generated from what was discovered. A partial manifest is disclosed loudly.",
+            "Resilient by default. An unparseable file is skipped and logged by name at WARN, and the manifest is generated from what was discovered. When the manifest is partial, the build output says so.",
           ],
           [
             "Zero capabilities",
             <>If nothing is discovered, the build succeeds but logs a WARN telling you to run <IC>tibyan scan</IC> to see why.</>,
           ],
-          ["Hard failures", "A genuinely invalid model, or an unwalkable source root, still fails the build."],
+          ["Hard failures", "An invalid model or an unwalkable source root still fails the build."],
         ]}
       />
 
       <H2 id="parameters">Parameters</H2>
       <p>
-        Each parameter has a <IC>-D</IC> property for command-line override.
+        Each parameter has a property that you can set with <IC>-D</IC> on the command line.
       </p>
       <DocTable
         head={["Parameter", "Property", "Default", "Purpose"]}
@@ -102,28 +102,28 @@ export default function MavenPlugin() {
 
       <H2 id="strict">Resilient and strict</H2>
       <p>
-        The default is built so that adopting the plugin never breaks a build on a bad file. For a
-        CI gate, turn strictness on:
+        By default, an unparseable file doesn't fail your build. To use the plugin as a CI gate,
+        turn on strict mode:
       </p>
       <CodeBlock label="shell" lang="shell">{`mvn package                        # resilient default
 mvn package -Dtibyan.strict=true   # fail the build on any unparseable file (CI gate)`}</CodeBlock>
       <Callout title="Keep versions together">
         <p>
           Keep the runtime dependency and the plugin at the same version. Before 1.0.0, treat every
-          minor bump as potentially breaking: the manifest format is additive where possible but
-          not yet stable. The{" "}
+          minor version bump as potentially breaking, because the manifest format is additive where
+          possible but not yet stable. The{" "}
           <ExtLink href={LINKS.changelog} className="prose-link">
             changelog
           </ExtLink>{" "}
-          lists what an adopter should read before upgrading.
+          lists what to read before you upgrade.
         </p>
       </Callout>
 
       <H2 id="multi-module">Multi-module builds</H2>
       <p>
-        In a reactor, <IC>sourceRoot</IC> defaults to the single module the plugin runs in, which is
-        usually not what you want. Point it at the reactor root so one manifest covers every module,
-        on the classpath of the module that runs. The recipe is in{" "}
+        In a reactor build, <IC>sourceRoot</IC> defaults to the single module the plugin runs in,
+        which usually isn't what you want. Point it at the reactor root so that one manifest covers
+        every module and lands on the classpath of the module that runs. For the setup, see{" "}
         <Link href="/docs/multi-module/" className="prose-link">
           Multi-module applications
         </Link>

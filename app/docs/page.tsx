@@ -8,7 +8,7 @@ import { LINKS, META } from "../_content/claims";
 export const metadata: Metadata = {
   title: "Documentation",
   description:
-    "What Tibyaan is, the three states a capability can be in, the four surfaces you use, and the path through the docs.",
+    "An overview of Tibyaan: the three states a read can end up in, the four parts you work with, and where to start in the docs.",
   alternates: { canonical: "/docs/" },
 };
 
@@ -17,74 +17,74 @@ export default function Docs() {
     <DocPage
       href="/docs/"
       title="Introduction"
-      lead="Tibyaan reads a Spring application you already run, proves which read operations are safe to hand to an AI agent, and serves them over MCP from inside your own app. These docs take you from a read-only preview to a connected agent."
+      lead="Tibyaan reads the source of a Spring application you already run, works out which read operations it can verify, and serves them to AI agents over MCP from inside your app. These docs take you from a read-only scan to a connected agent."
       toc={[
         { id: "what", label: "What it is" },
-        { id: "states", label: "Proven, refused, attested" },
-        { id: "surfaces", label: "The four surfaces" },
+        { id: "states", label: "Verified, refused, attested" },
+        { id: "surfaces", label: "The four parts" },
         { id: "path", label: "The intended path" },
         { id: "map", label: "Everything in the docs" },
-        { id: "deep", label: "The design record" },
+        { id: "deep", label: "Design documents" },
       ]}
     >
       <H2 id="what">What it is</H2>
       <p>
-        Tibyaan is a build-time tool and a small runtime. The tool parses your application's source,
-        builds a neutral model of the entities and read operations it can prove, and generates two
-        outputs from that one model: an MCP tool manifest and an OpenAPI 3.0 document. The runtime is
-        a dependency inside your Spring Boot app that reads the manifest at startup and serves one
-        MCP tool per capability, each calling the real service method it is bound to.
+        Tibyaan is a build-time tool and a small runtime. The tool parses your application's source
+        and builds a model of the entities and read operations it can verify. From that model it
+        generates two outputs: an MCP tool manifest and an OpenAPI 3.0 document. The runtime is a
+        dependency you add to your Spring Boot app. It reads the manifest at startup and serves one
+        MCP tool per capability, and each tool calls the service method it is bound to.
       </p>
       <p>
-        Your code is never modified. Nothing is hosted by anyone else: there is no Tibyaan service
-        in the path at runtime. Remove the dependency and the build plugin and the layer is gone.
+        Tibyaan doesn't modify your code, and no hosted Tibyaan service is involved at runtime. To
+        remove it, delete the dependency and the build plugin.
       </p>
 
-      <H2 id="states">Proven, refused, attested</H2>
-      <p>Every read Tibyaan looks at ends up in exactly one of three states.</p>
+      <H2 id="states">Verified, refused, attested</H2>
+      <p>Every read Tibyaan looks at ends up in one of three states.</p>
       <DocTable
         head={["State", "What it means", "What ships"]}
         rows={[
           [
-            <strong key="a">Proven</strong>,
-            "The code's structure shows which real method backs the read, on which entity, returning what. Today that covers read-by-id and the unfiltered list.",
+            <strong key="a">Verified</strong>,
+            "The code's structure shows which method backs the read, which entity it reads, and what it returns. Today this covers read-by-id and the unfiltered list.",
             "A verified tool, in the manifest and the OpenAPI document.",
           ],
           [
             <strong key="b">Refused</strong>,
-            "The structure does not decide the case: no backing method, two candidates, no usable identifier, a filter whose meaning is a claim. The tool never guesses.",
-            "Nothing. The survey names the read, the reason, and the file.",
+            "The code's structure doesn't settle the case. For example, there is no backing method, there are two candidate methods, there is no usable identifier, or the read has a filter whose meaning can't be checked from the code.",
+            "Nothing. The survey lists the read with the reason.",
           ],
           [
             <strong key="c">Attested</strong>,
-            "A named person asserts what a refused read means, in a committed file. The tool still proves everything around the claim and fingerprints the code it was asserted against.",
+            "A named person states what a refused read means, in a committed file. The tool still checks everything else about the read and fingerprints the code the statement was made against.",
             <>
-              A tool whose name starts with <IC>attested_</IC>, labeled human-attested everywhere,
-              never counted as verified.
+              A tool whose name starts with <IC>attested_</IC>. It is labeled human-attested
+              wherever it appears and isn't counted as verified.
             </>,
           ],
         ]}
       />
       <Callout title="Expect refusals">
         <p>
-          A large, layered application becomes a small verified subset plus a long, named list of
-          refusals. That is the tool working. The number to watch is <IC>mis-bound</IC>, and it must
-          stay 0.
+          A large, layered application produces a small set of verified capabilities and a long
+          list of refusals, each with its reason. This is expected. The count to check is{" "}
+          <IC>mis-bound</IC>, which must stay 0.
         </p>
       </Callout>
 
-      <H2 id="surfaces">The four surfaces</H2>
+      <H2 id="surfaces">The four parts</H2>
       <DocTable
-        head={["Surface", "You use it to", "Entry point"]}
+        head={["Part", "You use it to", "Entry point"]}
         rows={[
           [
             <Link key="cli" href="/docs/cli/" className="prose-link">CLI</Link>,
-            "Survey an app read-only, and produce artifacts by hand.",
+            "Run a read-only scan of an app, and generate the output files by hand.",
             <IC key="c1" wrap>{`java -jar tibyan-cli-${META.version}-jar-with-dependencies.jar`}</IC>,
           ],
           [
             <Link key="mp" href="/docs/maven-plugin/" className="prose-link">Maven plugin</Link>,
-            "Generate the manifest automatically at build time.",
+            "Generate the manifest during your build.",
             <IC key="c2">tibyan-maven-plugin</IC>,
           ],
           [
@@ -94,30 +94,29 @@ export default function Docs() {
           ],
           [
             <Link key="at" href="/docs/attestation/" className="prose-link">Attestations file</Link>,
-            "Carry reads the tool cannot prove, as reviewed human claims.",
+            "Add reads the tool can't verify, as reviewed human attestations.",
             <IC key="c4">tibyan/attestations.json</IC>,
           ],
         ]}
       />
       <p>
-        Most adopters never touch the CLI in production. The plugin runs the same pipeline during
-        your build, and the runtime serves what it produced. The CLI is for the preview, for
-        surveys, and for inspection.
+        Most adopters don't use the CLI in production. The plugin runs the same pipeline during
+        your build, and the runtime serves what it produced. Use the CLI to preview an app and to
+        inspect the results.
       </p>
 
       <H2 id="path">The intended path</H2>
       <ol>
         <li>
-          <strong>Preview.</strong> Run <IC>scan</IC> against your source. It is read-only and
-          changes nothing.
+          <strong>Preview.</strong> Run <IC>scan</IC> against your source. The scan is read-only.
         </li>
         <li>
-          <strong>Read the survey.</strong> Decide from the evidence. If it discovers nothing
-          useful, stop: you have spent no build changes to learn it.
+          <strong>Read the survey.</strong> If it finds nothing useful for your app, you can stop
+          here without having changed your build.
         </li>
         <li>
           <strong>Adopt.</strong> Add the runtime dependency and the build plugin to your{" "}
-          <IC>pom.xml</IC>, then <IC>mvn package</IC>.
+          <IC>pom.xml</IC>, then run <IC>mvn package</IC>.
         </li>
         <li>
           <strong>Connect</strong> an agent to <IC>http://localhost:8080/sse</IC>, after you have
@@ -147,15 +146,15 @@ export default function Docs() {
         </div>
       ))}
 
-      <H2 id="deep">The design record</H2>
+      <H2 id="deep">Design documents</H2>
       <p>
-        These pages are the adopter-facing layer. The full design, seventeen volumes, the
-        architecture decisions, and the dated benchmark ledgers, lives in the{" "}
+        These pages cover what you need to adopt Tibyaan. The full design (seventeen volumes), the
+        architecture decisions, and the dated benchmark ledgers are in the{" "}
         <ExtLink href={LINKS.docs} className="prose-link">
           repository
-        </ExtLink>{" "}
-        and is linked rather than mirrored, so it cannot drift from the source of truth. Release
-        notes are in the{" "}
+        </ExtLink>
+        . This site links to them, so there is only one copy to keep up to date. Release notes are
+        in the{" "}
         <ExtLink href={LINKS.changelog} className="prose-link">
           changelog
         </ExtLink>

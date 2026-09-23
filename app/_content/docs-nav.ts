@@ -14,17 +14,17 @@ export const DOCS_NAV: DocGroup[] = [
       {
         title: "Introduction",
         href: "/docs/",
-        blurb: "What Tibyaan is, the three states a capability can be in, and the path through these docs.",
+        blurb: "What Tibyaan is, the three states a capability can be in, and where to go next in these docs.",
       },
       {
         title: "Quickstart",
         href: "/docs/getting-started/",
-        blurb: "Preview read-only, adopt with two build entries, connect an agent, gate the endpoint.",
+        blurb: "Run a read-only scan, add two build entries, connect an agent, and gate the endpoint.",
       },
       {
         title: "Reading your survey",
         href: "/docs/reading-your-survey/",
-        blurb: "What every line of the scan output means, each refusal cause, and the numbers that must stay 0.",
+        blurb: "What each line of the scan output means, the refusal causes, and the count that must stay at 0.",
       },
     ],
   },
@@ -44,7 +44,7 @@ export const DOCS_NAV: DocGroup[] = [
       {
         title: "Attestation",
         href: "/docs/attestation/",
-        blurb: "Carry a read the tool cannot prove as a labeled, fingerprinted human assertion.",
+        blurb: "Add a read the tool can't verify by recording it as a labeled, fingerprinted human assertion.",
       },
     ],
   },
@@ -54,12 +54,12 @@ export const DOCS_NAV: DocGroup[] = [
       {
         title: "CLI",
         href: "/docs/cli/",
-        blurb: "scan, generate, attest, validate, version: synopsis, options, and exit codes.",
+        blurb: "Synopsis, options, and exit codes for scan, generate, attest, validate, and version.",
       },
       {
         title: "Maven plugin",
         href: "/docs/maven-plugin/",
-        blurb: "The generate goal, its parameters, resilient and strict modes.",
+        blurb: "The generate goal, its parameters, and the resilient and strict modes.",
       },
       {
         title: "Spring runtime",
@@ -74,12 +74,12 @@ export const DOCS_NAV: DocGroup[] = [
       {
         title: "Security",
         href: "/docs/security/",
-        blurb: "What the generated layer executes, the read-only boundary, and what you must gate.",
+        blurb: "What the generated layer executes, what read-only covers, and what you must gate.",
       },
       {
         title: "FAQ",
         href: "/docs/faq/",
-        blurb: "Short answers to what surprises people on a first run.",
+        blurb: "Short answers to common questions from a first run.",
       },
     ],
   },

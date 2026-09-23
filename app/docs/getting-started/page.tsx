@@ -7,7 +7,7 @@ import { REQUIREMENTS, LINKS, META } from "../../_content/claims";
 export const metadata: Metadata = {
   title: "Quickstart",
   description:
-    "The honest quickstart: check you are in range, preview read-only, read your survey, adopt with two build entries, connect an agent, and gate the endpoint.",
+    "Check the requirements, run a read-only scan, read your survey, add two entries to your build, connect an agent, and restrict access to the endpoint.",
   alternates: { canonical: "/docs/getting-started/" },
 };
 
@@ -18,32 +18,30 @@ export default function GettingStarted() {
     <DocPage
       href="/docs/getting-started/"
       title="Quickstart"
-      lead="Preview first. It changes nothing. Check you are in range, survey your app read-only, read the result, and adopt only if it convinced you. Adoption is a dependency and a build step, not a rewrite."
+      lead="This guide starts with a read-only scan of your application, so you can see what Tibyaan finds before you change anything. If the result is useful, you add one dependency and one build plugin to your pom.xml, then connect an agent."
       toc={[
-        { id: "range", label: "1. Are you in range?" },
-        { id: "preview", label: "2. Preview, read-only" },
+        { id: "range", label: "1. Check the requirements" },
+        { id: "preview", label: "2. Run a read-only scan" },
         { id: "survey", label: "3. Read your survey" },
-        { id: "adopt", label: "4. Adopt" },
+        { id: "adopt", label: "4. Add Tibyaan to your build" },
         { id: "connect", label: "5. Connect an agent" },
-        { id: "security", label: "6. Before you expose anything" },
+        { id: "security", label: "6. Restrict access to the endpoint" },
       ]}
     >
       <Steps>
-        <Step n={1} id="range" title="Are you in range?">
-          <p>The gate comes first, before you invest anything.</p>
+        <Step n={1} id="range" title="Check the requirements">
+          <p>Check these before you change anything in your project.</p>
           <DocTable head={["Requirement", "Detail"]} rows={REQUIREMENTS.map((r) => [<strong key={r.k}>{r.k}</strong>, r.v])} />
           <p>
-            A Spring Boot 2.x or Java 8 backend cannot host the runtime as-is, and we would rather
-            tell you now than after you have edited your pom. The preview below, however, reads any
-            Java source tree and needs only Java 17.
+            A Spring Boot 2.x or Java 8 backend can't host the runtime as-is. You can still run the
+            scan in the next step, which reads any Java source tree and needs only Java 17.
           </p>
         </Step>
 
-        <Step n={2} id="preview" title="Preview, read-only, zero risk">
+        <Step n={2} id="preview" title="Run a read-only scan">
           <p>
             Download the self-contained CLI from Maven Central and point it at your application.
-            This only reads source: it never writes to your project, never touches your build, and
-            cannot break anything.
+            The scan only reads source files. It doesn't write to your project or touch your build.
           </p>
           <CodeBlock
             label="shell"
@@ -55,14 +53,14 @@ curl -O ${LINKS.cliJar}
 # Survey your application. This only reads source; it writes nothing:
 java -jar ${JAR} scan /path/to/your-app`}</CodeBlock>
           <p>
-            It prints the discovered capabilities, every refusal with its located reason, and the
-            totals including <IC>mis-bound 0</IC>. If the preview discovers nothing useful for your
-            app, stop here: you have spent no build changes to learn it.
+            The scan prints the discovered capabilities, every refusal with its reason, and
+            a totals line that includes <IC>mis-bound 0</IC>. If it finds nothing useful for your
+            app, you can stop here without having changed your build.
           </p>
-          <Callout title="Multi-module application?">
+          <Callout title="Multi-module applications">
             <p>
-              Point the scan at the reactor root, not at one module. Discovery resolves against
-              exactly the files you scan. See{" "}
+              Point the scan at the reactor root instead of a single module, because discovery only
+              sees the files you scan. See{" "}
               <Link href="/docs/multi-module/" className="prose-link">
                 Multi-module applications
               </Link>
@@ -71,7 +69,7 @@ java -jar ${JAR} scan /path/to/your-app`}</CodeBlock>
           </Callout>
           <details className="mt-5">
             <summary className="cursor-pointer text-[14.5px] font-medium text-fg">
-              Prefer to build the CLI from source?
+              Build the CLI from source
             </summary>
             <CodeBlock label="shell" lang="shell">{`# From a checkout of the v${META.cliVersionExample} tag (a main checkout builds a -SNAPSHOT jar):
 mvn -pl tibyan-cli -am -DskipTests package
@@ -81,23 +79,26 @@ java -jar tibyan-cli/target/${JAR} scan /path/to/your-app`}</CodeBlock>
 
         <Step n={3} id="survey" title="Read your survey">
           <p>
-            A real, layered application turns into a precise verified subset plus a named ledger of
-            refusals. That is the tool working, not failing. The one number that must stay 0 is{" "}
-            <IC>mis-bound</IC>.
+            A layered application produces a set of verified capabilities and a list of refusals,
+            each with its reason. A long list of refusals is expected. The count to check is{" "}
+            <IC>mis-bound</IC>, which must stay 0.
+          </p>
+          <p>
+            To save the survey as a Markdown report you can share, add <IC>--report</IC>:
           </p>
           <CodeBlock label="shell" lang="shell">{`# The same survey as a shareable Markdown report:
 java -jar ${JAR} scan /path/to/your-app --report survey.md`}</CodeBlock>
           <p>
             <Link href="/docs/reading-your-survey/" className="link-arrow">
-              What every line and refusal cause means <Arrow />
+              What each line and refusal cause means <Arrow />
             </Link>
           </p>
         </Step>
 
-        <Step n={4} id="adopt" title="Adopt: two entries in your build file">
+        <Step n={4} id="adopt" title="Add Tibyaan to your build">
           <p>
-            Once the preview convinces you, add the runtime dependency, which hosts the MCP server
-            inside your app's own context:
+            Add the runtime dependency. It hosts the MCP server inside your application's own
+            context:
           </p>
           <CodeBlock label="pom.xml (dependency)" lang="xml">{`<dependency>
   <groupId>${META.groupId}</groupId>
@@ -105,8 +106,8 @@ java -jar ${JAR} scan /path/to/your-app --report survey.md`}</CodeBlock>
   <version>${META.version}</version>
 </dependency>`}</CodeBlock>
           <p>
-            Then the build plugin, which generates the manifest from your source at build time and
-            places it on the classpath, so nothing is committed by hand:
+            Then add the build plugin. It generates the manifest from your source at build time and
+            puts it on the classpath, so you don't commit the manifest by hand:
           </p>
           <CodeBlock label="pom.xml (build plugin)" lang="xml">{`<plugin>
   <groupId>${META.groupId}</groupId>
@@ -119,14 +120,15 @@ java -jar ${JAR} scan /path/to/your-app --report survey.md`}</CodeBlock>
   </executions>
 </plugin>`}</CodeBlock>
           <p>
-            Build, and the plugin writes <IC wrap>target/classes/tibyan/capabilities.json</IC>:
+            Build the project. The plugin writes the manifest to{" "}
+            <IC wrap>target/classes/tibyan/capabilities.json</IC>:
           </p>
           <CodeBlock label="shell" lang="shell">{`mvn package
 java -jar target/your-app.jar`}</CodeBlock>
           <p>
-            The plugin is resilient by default: an unparseable source file is skipped and named at
-            WARN, not fatal, so adopting Tibyaan does not break your build. Set{" "}
-            <IC>-Dtibyan.strict=true</IC> to fail on any unparseable file, for CI. Details are in
+            By default, the plugin skips any source file it can't parse and logs the file name at
+            WARN, so adopting Tibyaan doesn't break your build. For CI, set{" "}
+            <IC>-Dtibyan.strict=true</IC> to fail the build on any unparseable file. Details are in
             the{" "}
             <Link href="/docs/maven-plugin/" className="prose-link">
               Maven plugin reference
@@ -137,14 +139,15 @@ java -jar target/your-app.jar`}</CodeBlock>
 
         <Step n={5} id="connect" title="Connect an agent">
           <p>
-            The runtime finds the manifest on the classpath automatically: no launch property, no
-            MCP block in <IC>application.yml</IC>. The MCP server is served at{" "}
-            <IC>http://localhost:8080/sse</IC>. Smoke-test it, then register it with your client:
+            The runtime finds the manifest on the classpath automatically. You don't need a launch
+            property or an MCP block in <IC>application.yml</IC>. The MCP server is available at{" "}
+            <IC>http://localhost:8080/sse</IC>. Check that it responds, then register it with your
+            client:
           </p>
           <CodeBlock
             label="shell"
             lang="shell"
-            caption="Verified end to end: an out-of-process client completes initialize, tools/list, and a real tools/call over the network against the example app."
+            caption="This flow is tested end to end. An out-of-process client completes initialize, tools/list, and a tools/call over the network against the example app."
           >{`# The server should immediately send an "endpoint" event:
 curl -N http://localhost:8080/sse
 
@@ -160,24 +163,24 @@ claude mcp add --transport sse my-legacy-app http://localhost:8080/sse`}</CodeBl
           </p>
         </Step>
 
-        <Step n={6} id="security" title="Before you expose anything">
+        <Step n={6} id="security" title="Restrict access to the endpoint">
           <p>
-            The generated server runs inside your application's process and calls your real service
-            methods against your real data. v1 serves read-only capabilities: writes are refused at
-            the discovery level, never generated into the manifest. But v1 adds no authentication
-            of its own.
+            The generated server runs inside your application's process and calls your service
+            methods against your application's data. v1 serves read-only capabilities. Writes are
+            left out during discovery and are never generated into the manifest. v1 adds no
+            authentication of its own.
           </p>
           <Callout title="Treat /sse like an unauthenticated admin console">
             <p>
               Bind it to localhost, or keep it behind your existing network controls, a VPN, or an
-              authenticating reverse proxy you operate. The fail-loud discipline guarantees each
-              tool is bound to the method that backs it; it does not authenticate callers or
-              authorize actions. That decision is yours.
+              authenticating reverse proxy you operate. Tibyaan's verification covers which method
+              each tool is bound to. It doesn't authenticate callers or authorize actions, so
+              access control is your responsibility.
             </p>
           </Callout>
           <p>
             <Link href="/docs/security/" className="link-arrow">
-              Read the security posture in full <Arrow />
+              Read the security page <Arrow />
             </Link>
           </p>
         </Step>
